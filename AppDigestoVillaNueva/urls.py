@@ -6,4 +6,6 @@ urlpatterns = [
     path('decreto-crear/', views.DecretoCreateView.as_view(), name='decreto_create'),
     path('decreto-editar/<int:pk>/', views.DecretoUpdateView.as_view(), name='decreto_update'),
     path('decreto-listar/', views.DecretoListView.as_view(), name='decreto_list'),
+    path('decreto-eliminar/<int:pk>/', views.DecretoDeleteView.as_view(), name='decreto_delete'),
+    path('decreto-pdf/<int:pk>/', views.decreto_pdf_view, name='decreto_pdf'),
 ]

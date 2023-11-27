@@ -38,10 +38,11 @@
         <div class="row">
           <div class="col-12">
             <h6>Archivo PDF</h6>
-            {% if form.instance.archivo_pdf %}
-              <p><b>Archivo actual:</b> {{ form.instance.archivo_pdf }}</p>
-            {% endif %}
             {{ form.archivo_pdf }}
+            {% if form.instance.archivo_pdf %}
+            <p class="float-end text-danger"><b>¡Si cargas otro archivo reemplazaras el existente!</b></p>
+              <p><i><b>Archivo actual:</b> {{ form.instance.archivo_pdf }}</i></p>
+            {% endif %}
           </div>
         </div>
       </div>

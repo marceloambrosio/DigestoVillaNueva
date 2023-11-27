@@ -1,4 +1,5 @@
-from django.shortcuts import render
+from django.http import FileResponse, HttpResponse
+from django.shortcuts import get_object_or_404, redirect, render
 from django.views.generic import CreateView, UpdateView, DeleteView, ListView, View
 from django.urls import reverse_lazy
 from datetime import date
@@ -68,3 +69,29 @@ class DecretoListView(ListView):
     model = Decreto
     template_name = "decreto_list.html"
     context_object_name = 'decretos'
+    
+    def get_queryset(self):
+        return Decreto.objects.filter(eliminado=False).order_by('-anio', '-numero_decreto')
+
+class DecretoDeleteView(UpdateView):
+    model = Decreto
+    fields = ['eliminado']
+
+    def get(self, request, *args, **kwargs):
+        return self.delete(request, *args, **kwargs)
+
+    def delete(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        self.object.eliminado = True
+        self.object.save()
+        return redirect('decreto_list')
+
+
+def decreto_pdf_view(request, pk):
+    decreto = get_object_or_404(Decreto, pk=pk)
+    
+    with open(decreto.archivo_pdf.path, 'rb') as pdf:
+        response = HttpResponse(pdf.read(), content_type='application/pdf')
+        filename = 'Decreto-{0}-{1:04d}.pdf'.format(decreto.anio, decreto.numero_decreto)
+        response['Content-Disposition'] = 'inline; filename="{0}"'.format(filename)
+        return response

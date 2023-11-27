@@ -38,6 +38,11 @@
         <div class="row">
           <div class="col-12">
             <h6>Archivo PDF</h6>
+            {% if form.archivo_pdf.errors %}
+                <div class="alert alert-danger">
+                    {{ form.archivo_pdf.errors }}
+                </div>
+            {% endif %}
             {{ form.archivo_pdf }}
           </div>
         </div>
