@@ -1,0 +1,16 @@
+version: '1'
+services:
+  db:
+    image: postgres:16
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: digesto_villanueva
+      POSTGRES_USER: computos
+      POSTGRES_PASSWORD: D1g3st0_vn
+    volumes:
+      #- C:\Users\marce\Documents\DockerVolumes\digesto_villanueva:/var/lib/postgresql/data
+      - /Users/marceloambrosio/Documents/DockerVolumes/digesto_villanueva:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
