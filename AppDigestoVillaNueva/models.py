@@ -6,7 +6,7 @@ from datetime import date
 class Documento(models.Model):
     fecha_creacion = models.DateField(default=date.today)
     descripcion = models.TextField(max_length=2000)
-    archivo_adjunto = models.FileField(blank=True, null=True)
+    archivo_pdf = models.FileField(blank=True, null=True)
     publicado = models.BooleanField(default=False)
     eliminado = models.BooleanField(default=False)
 
