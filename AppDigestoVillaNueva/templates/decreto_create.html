@@ -4,33 +4,40 @@
 <br>
 <div class="card" style="width: 100%;">
   <div class="card-body">
-    <h5 class="card-title">Crear Decreto</h5>
+    <h4 class="card-title">Cargar Nuevo Decreto</h4>
     <form method="POST">
       {% csrf_token %}
       <div class="mb-3">
+        <br>
         <div class="row">
+          <div class="col-2">
+            <h6>Número de Decreto</h6>
+            {{ form.numero_decreto }}
+          </div>
+          <div class="col-2">
+            <h6>Año</h6>
+            {{ form.anio }}
+          </div>
           <div class="col-4">
-            <label class="form-label">Fecha Creación</label>
+            <h6>Fecha Creación</h6>
             {{ form.fecha_creacion }}
           </div>
           <div class="col-4">
-            <label class="form-label">Número de Decreto</label>
-            {{ form.numero_decreto }}
-          </div>
-          <div class="col-4">
-            <label class="form-label">Año</label>
-            {{ form.anio }}
+            <h6>Fecha Publicación (Si corresponde)</h6>
+            {{ form.fecha_publicacion }}
           </div>
         </div>
+        <br>
         <div class="row">
           <div class="col-12">
-            <label class="form-label">Descripción</label>
+            <h6>Descripción</h6>
             {{ form.descripcion }}
           </div>
         </div>
+        <br>
         <div class="row">
           <div class="col-12">
-            <label class="form-label">Cargar archivo PDF</label>
+            <h6>Archivo PDF</h6>
             {{ form.archivo_pdf }}
           </div>
         </div>

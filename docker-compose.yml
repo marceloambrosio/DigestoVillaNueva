@@ -9,8 +9,8 @@ services:
       POSTGRES_USER: computos
       POSTGRES_PASSWORD: D1g3st0_vn
     volumes:
-      #- C:\Users\marce\Documents\DockerVolumes\digesto_villanueva:/var/lib/postgresql/data
-      - /Users/marceloambrosio/Documents/DockerVolumes/digesto_villanueva:/var/lib/postgresql/data
+      - D:\Users\marce\Documents\DockerVolumes\DigestoVillaNueva:/var/lib/postgresql/data
+      #- /Users/marceloambrosio/Documents/DockerVolumes/digesto_villanueva:/var/lib/postgresql/data
 
 volumes:
   postgres_data:
