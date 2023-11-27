@@ -76,8 +76,12 @@ WSGI_APPLICATION = 'DigestoProject.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'digesto_villanueva',
+        'USER': 'computos',
+        'PASSWORD': 'D1g3st0_vn',
+        'HOST': 'localhost',
+        'PORT': '5432',
     }
 }
 
