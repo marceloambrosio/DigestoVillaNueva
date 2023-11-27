@@ -14,6 +14,13 @@ class DecretoCreateView(CreateView):
     template_name = "decreto_create.html"
     success_url = reverse_lazy('decreto_list')
 
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST, request.FILES)
+        if form.is_valid():
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(form)
+
     def get_initial(self):
         # Obtiene el valor máximo de numero_decreto del año actual + 1
         today = date.today()

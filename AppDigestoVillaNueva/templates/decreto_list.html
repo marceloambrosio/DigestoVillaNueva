@@ -1,10 +1,31 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  <h2>Listado de decretos</h2>
-  <ul>
-    {% for decreto in decretos %}
-      <li>{{ decreto.descripcion }}</li>
-    {% endfor %}
-  </ul>
+<div class="container mt-5">
+    <h2>Listado de Decretos</h2>
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th scope="col">Nombre del Decreto</th>
+                <th scope="col">Fecha de Publicación</th>
+                <th scope="col">Archivo Adjunto</th>
+                <th scope="col">Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for decreto in object_list %}
+            <tr>
+                <td>{{ decreto.numero_decreto }}/{{ decreto.anio }}</td>
+                <td>{{ decreto.fecha_publicacion }}</td>
+                <td>{% if decreto.archivo_pdf %}Sí{% else %}No{% endif %}</td>
+                <td>
+                    <a href="{% url 'decreto_update' decreto.id %}" class="btn btn-primary">Editar</a>
+                    <!-- Asegúrate de manejar la eliminación de manera segura -->
+                    <a href="" class="btn btn-danger">Eliminar</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
 {% endblock %}

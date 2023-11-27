@@ -5,7 +5,7 @@
 <div class="card" style="width: 100%;">
   <div class="card-body">
     <h4 class="card-title">Cargar Nuevo Decreto</h4>
-    <form method="POST">
+    <form method="POST" enctype="multipart/form-data">
       {% csrf_token %}
       <div class="mb-3">
         <br>
