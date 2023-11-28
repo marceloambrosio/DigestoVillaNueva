@@ -3,6 +3,8 @@
 {% block content %}
 <div class="container mt-5">
     <h2>Listado de Decretos</h2>
+    <a href="{% url 'decreto_create' %}" class="btn btn-primary float-end">Nuevo Decreto <i
+      class="bi bi-file-earmark-plus"></i></a>
     <br>
     <table class="table table-hover">
         <thead>
@@ -16,46 +18,64 @@
         <tbody>
             {% for decreto in object_list %}
             <tr>
-                <td>{{ decreto.numero_decreto }}/{{ decreto.anio }}</td>
-                <td>{{ decreto.fecha_publicacion }}</td>
+                <td>{{ decreto.numero_decreto|stringformat:"04d" }}/{{ decreto.anio|stringformat:"s"|slice:"-2:" }}</td>
+                <td>
+                  {% if decreto.fecha_publicacion %}
+                  {{ decreto.fecha_publicacion }}
+                  {% else %}
+                  No publicado
+                  {% endif %}
+                </td>
                 <td>{% if decreto.archivo_pdf %}Sí{% else %}No{% endif %}</td>
                 <td>
                   {% if not decreto.publicado %}
-                    <a href="{% url 'decreto_update' decreto.id %}" class="btn btn-primary">Editar</a>
+                  <span data-bs-toggle="tooltip" data-bs-placement="top" title="Editar">
+                    <button type="button" class="btn btn-primary" onclick="window.location.href='{% url 'decreto_update' decreto.id %}'"><i class="bi bi-pencil"></i></button>
+                  </span>
                   {% endif %}
                   {% if decreto.archivo_pdf %}
-                    <a href="{% url 'decreto_pdf' decreto.id %}" class="btn btn-success" target="_blank">Imprimir</a>
+                  <span data-bs-toggle="tooltip" data-bs-placement="top" title="Imprimir">
+                    <button type="button" class="btn btn-success" onclick="window.open('{% url 'decreto_pdf' decreto.id %}', '_blank')"><i class="bi bi-printer"></i></button>
+                  </span>
                   {% endif %}
                   {% if not decreto.publicado %}
-                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal{{ decreto.id }}">Eliminar</button>
+                  <span data-bs-toggle="tooltip" data-bs-placement="top" title="Eliminar">
+                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal{{ decreto.id }}"><i class="bi bi-trash"></i></button>
+                  </span>
                   {% endif %}
                 </td>
             </tr>
-            <!-- Modal -->
-    <div class="modal fade" id="deleteModal{{ decreto.id }}" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="deleteModalLabel">Confirmar eliminación</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <p class="text-center">¿Estás seguro de que deseas eliminar el <b>Decreto Nº {{ decreto.numero_decreto }}/{{ decreto.anio }}</b>?</p>
-            <p class="text-danger text-center"><b>¡Una vez eliminado no podrás recuperarlo!</b></p>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-            <a href="{% url 'decreto_delete' decreto.id %}" class="btn btn-danger">Eliminar</a>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!-- ... -->
+              <!-- Modal -->
+              <div class="modal fade" id="deleteModal{{ decreto.id }}" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="deleteModalLabel">Confirmar eliminación</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                      <p class="text-center">¿Estás seguro de que deseas eliminar el <b>Decreto Nº {{ decreto.numero_decreto|stringformat:"04d" }}/{{ decreto.anio|stringformat:"s"|slice:"-2:" }}</b>?</p>
+                      <p class="text-danger text-center"><b>¡Una vez eliminado no podrás recuperarlo!</b></p>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                      <a href="{% url 'decreto_delete' decreto.id %}" class="btn btn-danger">Eliminar</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- ... -->
             {% endfor %}
         </tbody>
     </table>
 </div>
 
-    
+<script>
+  // Inicializar los tooltips
+  var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+  var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+      return new bootstrap.Tooltip(tooltipTriggerEl);
+  });
+</script>
 
 {% endblock %}
