@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2>Confirmar publicación masiva de decretos</h2>
+  <form method="post">
+    {% csrf_token %}
+    <p>Estos son los decretos que se publicarán:</p>
+    <ul>
+      {% for decreto in decretos %}
+        <li>{{ decreto.numero_decreto|stringformat:"04d" }}/{{ decreto.anio|stringformat:"s"|slice:"-2:" }}</li>
+      {% endfor %}
+    </ul>
+    <input type="submit" name="confirmar" value="Confirmar publicación">
+  </form>
+{% endblock %}
