@@ -17,6 +17,7 @@
           </tr>
       </thead>
       <tbody>
+        {% if decretos %}
         {% for decreto in decretos %}
           <tr>
             <td>{{ decreto.numero_decreto|stringformat:"04d" }}/{{ decreto.anio|stringformat:"s"|slice:"-2:" }}</td>
@@ -24,9 +25,38 @@
             <td>{{ decreto.descripcion }}</td>
           </tr>
         {% endfor %}
+        {% else %}
+          <tr>
+            <td colspan="3">No hay decretos para publicar entre las fechas seleccionadas.</td>
+          </tr>
+        {% endif %}
       </tbody>
       </table>
-      <input type="submit" class="btn btn-primary float-end" name="confirmar" value="Confirmar publicación">
+      {% if decretos %}
+      <button type="button" class="btn btn-primary float-end" data-bs-toggle="modal" data-bs-target="#confirmModal">
+        Confirmar publicación
+      </button>
+
+        <!-- Modal de confirmación -->
+        <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="confirmModalLabel">Confirmar publicación</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <p>¿Estás seguro de que deseas publicar los decretos?</p>
+                <p class="text-danger text-center"><b>¡Una vez eliminado no podrás recuperarlo!</b></p>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="submit" class="btn btn-primary" name="confirmar">Publicar</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      {% endif %}
     </form>
   </div>
 </div>
