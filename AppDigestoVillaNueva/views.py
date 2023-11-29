@@ -106,31 +106,31 @@ class DecretoPublicarMasivoView(View):
         return render(request, 'decreto_publicacion_masiva.html')
 
     def post(self, request):
-        fecha_desde = request.POST.get('fecha_desde')
-        fecha_hasta = request.POST.get('fecha_hasta')
-
-        if fecha_desde and fecha_hasta:
-            fecha_desde = datetime.strptime(fecha_desde, '%Y-%m-%d').date()
-            fecha_hasta = datetime.strptime(fecha_hasta, '%Y-%m-%d').date()
-
-            decretos = Decreto.objects.filter(fecha_creacion__range=(fecha_desde, fecha_hasta))
-
-            # Filtrar decretos que pueden ser publicados
-            decretos_a_publicar = [decreto for decreto in decretos if decreto.archivo_pdf and not decreto.fecha_publicacion]
-
+        if 'confirmar' in request.POST:
             # Si se confirma la publicación, publicar los decretos
-            if 'confirmar' in request.POST:
-                for decreto in decretos_a_publicar:
-                    decreto.publicado = True
-                    decreto.fecha_publicacion = date.today()
-                    decreto.save()
+            decretos_a_publicar_ids = request.session.get('decretos_a_publicar_ids', [])
+            decretos_a_publicar = Decreto.objects.filter(id__in=decretos_a_publicar_ids)
+            for decreto in decretos_a_publicar:
+                decreto.publicado = True
+                decreto.fecha_publicacion = date.today()
+                decreto.save()
+            del request.session['decretos_a_publicar_ids']  # Limpiar la sesión
+            return redirect('decreto_list')
+        else:
+            # Obtener las fechas y filtrar los decretos
+            fecha_desde = request.POST.get('fecha_desde')
+            fecha_hasta = request.POST.get('fecha_hasta')
+            if fecha_desde and fecha_hasta:
+                fecha_desde = datetime.strptime(fecha_desde, '%Y-%m-%d').date()
+                fecha_hasta = datetime.strptime(fecha_hasta, '%Y-%m-%d').date()
+                decretos = Decreto.objects.filter(fecha_creacion__range=(fecha_desde, fecha_hasta))
+                decretos_a_publicar = [decreto for decreto in decretos if decreto.archivo_pdf and not decreto.fecha_publicacion]
+                # Almacenar los IDs de los decretos a publicar en la sesión
+                request.session['decretos_a_publicar_ids'] = [decreto.id for decreto in decretos_a_publicar]
+                return render(request, 'decreto_confirmar_publicacion.html', {'decretos': decretos_a_publicar})
+            else:
                 return redirect('decreto_list')
 
-            # Si no se confirma la publicación, mostrar los decretos a publicar
-            else:
-                return render(request, 'decreto_confirmar_publicacion.html', {'decretos': decretos_a_publicar})
-
-        return redirect('decreto_list')
 
 def decreto_pdf_view(request, pk):
     decreto = get_object_or_404(Decreto, pk=pk)
