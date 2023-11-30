@@ -2,17 +2,17 @@
 
 {% block content %}
 <div class="container mt-5">
-    <h2>Listado de Decretos</h2>
-    <a href="{% url 'decreto_create' %}" class="btn btn-primary float-end">Nuevo Decreto <i
-      class="bi bi-file-earmark-plus"></i></a>
+    <h2>Listado de Decretos <a href="{% url 'decreto_create' %}" class="btn btn-primary float-end">Nuevo Decreto <i class="bi bi-file-earmark-plus"></i></a></h2>
+    
     <br>
-    <table class="table table-hover">
+    <table id="decretoTable" class="table table-hover">
         <thead>
             <tr>
-                <th scope="col">Nombre del Decreto</th>
-                <th scope="col">Fecha de Publicación</th>
-                <th scope="col">Archivo Adjunto</th>
-                <th scope="col">Acciones</th>
+                <th scope="col" class="col-1">Decreto</th>
+                <th scope="col" class="col-2">Fecha de Publicación</th>
+                <th scope="col" class="col-1">Archivo</th>
+                <th scope="col" class="col-6">Descripción</th>
+                <th scope="col" class="col-2">Acciones</th>
             </tr>
         </thead>
         <tbody>
@@ -27,6 +27,7 @@
                   {% endif %}
                 </td>
                 <td>{% if decreto.archivo_pdf %}Sí{% else %}No{% endif %}</td>
+                <td>{{ decreto.descripcion }}</td>
                 <td>
                   {% if not decreto.publicado %}
                   <span data-bs-toggle="tooltip" data-bs-placement="top" title="Editar">
@@ -50,46 +51,46 @@
                   {% endif %}
                 </td>
             </tr>
-              <!-- Inicio Modal Eliminar -->
-              <div class="modal fade" id="deleteModal{{ decreto.id }}" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <h5 class="modal-title" id="deleteModalLabel">Confirmar eliminación</h5>
-                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                      <p class="text-center">¿Estás seguro de que deseas eliminar el <b>Decreto Nº {{ decreto.numero_decreto|stringformat:"04d" }}/{{ decreto.anio|stringformat:"s"|slice:"-2:" }}</b>?</p>
-                      <p class="text-danger text-center"><b>¡Una vez eliminado no podrás recuperarlo!</b></p>
-                    </div>
-                    <div class="modal-footer">
-                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                      <a href="{% url 'decreto_delete' decreto.id %}" class="btn btn-danger">Eliminar</a>
-                    </div>
+            <!-- Inicio Modal Eliminar -->
+            <div class="modal fade" id="deleteModal{{ decreto.id }}" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="deleteModalLabel">Confirmar eliminación</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                    <p class="text-center">¿Estás seguro de que deseas eliminar el <b>Decreto Nº {{ decreto.numero_decreto|stringformat:"04d" }}/{{ decreto.anio|stringformat:"s"|slice:"-2:" }}</b>?</p>
+                    <p class="text-danger text-center"><b>¡Una vez eliminado no podrás recuperarlo!</b></p>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <a href="{% url 'decreto_delete' decreto.id %}" class="btn btn-danger">Eliminar</a>
                   </div>
                 </div>
               </div>
-              <!-- Fin Modal Eliminar -->
-              <!-- Inicio Modal Publicar -->
-              <div class="modal fade" id="publicModal{{ decreto.id }}" tabindex="-1" aria-labelledby="publicModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <h5 class="modal-title" id="publicModalLabel">Confirmar publicación</h5>
-                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                      <p class="text-center">¿Estás seguro de que deseas publicar el <b>Decreto Nº {{ decreto.numero_decreto|stringformat:"04d" }}/{{ decreto.anio|stringformat:"s"|slice:"-2:" }}</b>?</p>
-                      <p class="text-danger text-center"><b>¡Una vez publicado no podrás deshacer la acción!</b></p>
-                    </div>
-                    <div class="modal-footer">
-                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                      <a href="{% url 'decreto_public' decreto.id %}" class="btn btn-danger">Publicar</a>
-                    </div>
+            </div>
+            <!-- Fin Modal Eliminar -->
+            <!-- Inicio Modal Publicar -->
+            <div class="modal fade" id="publicModal{{ decreto.id }}" tabindex="-1" aria-labelledby="publicModalLabel" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="publicModalLabel">Confirmar publicación</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                    <p class="text-center">¿Estás seguro de que deseas publicar el <b>Decreto Nº {{ decreto.numero_decreto|stringformat:"04d" }}/{{ decreto.anio|stringformat:"s"|slice:"-2:" }}</b>?</p>
+                    <p class="text-danger text-center"><b>¡Una vez publicado no podrás deshacer la acción!</b></p>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <a href="{% url 'decreto_public' decreto.id %}" class="btn btn-danger">Publicar</a>
                   </div>
                 </div>
               </div>
-              <!-- Fin Modal Publicar -->
+            </div>
+            <!-- Fin Modal Publicar -->
             {% endfor %}
         </tbody>
     </table>
@@ -103,4 +104,31 @@
   });
 </script>
 
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+<script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
+<script>
+$(document).ready(function() {
+    $('#decretoTable').DataTable({
+        "language": {
+            "url": "//cdn.datatables.net/plug-ins/1.10.22/i18n/Spanish.json"
+        },
+        "initComplete": function() {
+            // Aplicar clases de Bootstrap al campo de búsqueda
+            $('div.dataTables_filter input').addClass('form-control form-control-sm');
+            $('div.dataTables_filter').css('float', 'right');
+
+            // Aplicar clases de Bootstrap al select de cantidad de registros a mostrar
+            $('div.dataTables_length').contents().filter(function() {return this.nodeType === 3; // Node.TEXT_NODE
+}).remove();
+    $('div.dataTables_length label').css('display', 'flex');
+    $('div.dataTables_length label').css('align-items', 'center');
+
+            // Aplicar clases de Bootstrap a la paginación
+            $('div.dataTables_paginate').addClass('justify-content-center');
+            $('div.dataTables_paginate a').addClass('btn btn-primary');
+        }
+    });
+});
+
+</script>
 {% endblock %}
