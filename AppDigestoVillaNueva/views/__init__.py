@@ -1,1 +1,1 @@
-from .decretos import *
+from .views_decretos import *

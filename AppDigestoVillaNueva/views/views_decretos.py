@@ -13,7 +13,7 @@ from datetime import datetime
 class DecretoCreateView(CreateView):
     model = Decreto
     form_class = DecretoForm
-    template_name = "decreto_create.html"
+    template_name = "decreto/decreto_create.html"
     success_url = reverse_lazy('decreto_list')
 
     def post(self, request, *args, **kwargs):
@@ -56,7 +56,7 @@ class DecretoCreateView(CreateView):
 class DecretoUpdateView(UpdateView):
     model = Decreto
     form_class = DecretoForm
-    template_name = "decreto_edit.html"
+    template_name = "decreto/decreto_edit.html"
     success_url = reverse_lazy('decreto_list')
 
     def form_valid(self, form):
@@ -75,7 +75,7 @@ class DecretoUpdateView(UpdateView):
 
 class DecretoListView(ListView):
     model = Decreto
-    template_name = "decreto_list.html"
+    template_name = "decreto/decreto_list.html"
     context_object_name = 'decretos'
     
     def get_queryset(self):
@@ -110,7 +110,7 @@ class DecretoPublicarView(UpdateView):
 
 class DecretoPublicarMasivoView(View):
     def get(self, request):
-        return render(request, 'decreto_publicacion_masiva.html')
+        return render(request, 'decreto/decreto_publicacion_masiva.html')
 
     def post(self, request):
         if 'confirmar' in request.POST:
@@ -134,7 +134,7 @@ class DecretoPublicarMasivoView(View):
                 decretos_a_publicar = [decreto for decreto in decretos if decreto.archivo_pdf and not decreto.fecha_publicacion]
                 # Almacenar los IDs de los decretos a publicar en la sesión
                 request.session['decretos_a_publicar_ids'] = [decreto.id for decreto in decretos_a_publicar]
-                return render(request, 'decreto_confirmar_publicacion.html', {'decretos': decretos_a_publicar})
+                return render(request, 'decreto/decreto_confirmar_publicacion.html', {'decretos': decretos_a_publicar})
             else:
                 return redirect('decreto_list')
 
