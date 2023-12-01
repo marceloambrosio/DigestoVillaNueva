@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 
+{% load static %}
+
 {% block content %}
 <div class="container mt-5">
     <h2>Listado de Ordenanzas <a href="{% url 'ordenanza_create' %}" class="btn btn-primary float-end">Nuevo Ordenanza <i class="bi bi-file-earmark-plus"></i></a></h2>
@@ -104,9 +106,8 @@
   });
 </script>
 
-<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
-<link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
-<script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+<link rel="stylesheet" href="{% static 'style/jquery.dataTables.min.css' %}">
+<script src="{% static 'js/jquery.dataTables.min.js' %}"></script>
 <script>
 $(document).ready(function() {
     var table = $('#ordenanzaTable').DataTable({

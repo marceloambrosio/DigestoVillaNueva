@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from .views import *
 
 urlpatterns = [
+    path('home/', index, name='index'),
     path('decreto-crear/', DecretoCreateView.as_view(), name='decreto_create'),
     path('decreto-editar/<int:pk>/', DecretoUpdateView.as_view(), name='decreto_update'),
     path('decreto-listar/', DecretoListView.as_view(), name='decreto_list'),

@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+
+<br>
+<h4 class="text-center">¡Bienvenido al Digesto Municipal de Villa Nueva!</h4>
+<br>
+<div class="row row-cols-1 row-cols-md-4 g-4">
+    <a href="{% url 'decreto_list' %}">
+    <div class="col">
+      <div class="card">
+        <img src="{% static 'images/home-1.png' %}" class="card-img-top" alt="Decretos">
+        <div class="card-body">
+          <h5 class="card-title text-center">Decretos</h5>
+          <p class="card-text"></p>
+        </div>
+      </div>
+    </div>
+    </a>
+    <a href="{% url 'resolucion_list' %}">
+    <div class="col">
+      <div class="card">
+        <img src="{% static 'images/home-2.png' %}" class="card-img-top" alt="Resoluciones">
+        <div class="card-body">
+          <h5 class="card-title text-center">Resoluciones</h5>
+          <p class="card-text"></p>
+        </div>
+      </div>
+    </div>
+    </a>
+    <a href="{% url 'ordenanza_list' %}">
+    <div class="col">
+      <div class="card">
+        <img src="{% static 'images/home-3.png' %}" class="card-img-top" alt="Ordenanzas">
+        <div class="card-body">
+          <h5 class="card-title text-center">Ordenanzas</h5>
+          <p class="card-text"></p>
+        </div>
+      </div>
+    </div>
+    </a>
+    <a href="{% url 'declaracion_list' %}">
+    <div class="col">
+      <div class="card">
+        <img src="{% static 'images/home-4.png' %}" class="card-img-top" alt="Declaraciones">
+        <div class="card-body">
+          <h5 class="card-title text-center">Declaraciones</h5>
+          <p class="card-text"></p>
+        </div>
+      </div>
+    </div>
+    </a>
+  </div>
+
+{% endblock %}
