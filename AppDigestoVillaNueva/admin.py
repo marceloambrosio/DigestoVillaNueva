@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Documento, Decreto, Ordenanza, Resolucion
+from .models import Documento, Decreto, Ordenanza, Resolucion, Declaracion
 
 # Register your models here.
 
@@ -23,7 +23,13 @@ class ResolucionAdmin(admin.ModelAdmin):
     search_fields = ('anio','numero_resolucion'),
     ordering = ['anio','numero_resolucion','fecha_publicacion']
 
+class DeclaracionAdmin(admin.ModelAdmin):
+    list_display = ('numero_declaracion', 'anio', 'fecha_publicacion', 'fecha_creacion', 'creado_por', 'ultima_modificacion', 'modificado_por')
+    search_fields = ('anio','numero_declaracion'),
+    ordering = ['anio','numero_declaracion','fecha_publicacion']
+
 admin.site.register(Documento, DocumentoAdmin)
 admin.site.register(Decreto, DecretoAdmin)
 admin.site.register(Ordenanza, OrdenanzaAdmin)
 admin.site.register(Resolucion, ResolucionAdmin)
+admin.site.register(Declaracion, DeclaracionAdmin)

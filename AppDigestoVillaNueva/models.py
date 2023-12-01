@@ -55,3 +55,16 @@ class Resolucion(Documento):
 
     def __str__(self):
         return "Resolucion- " + str(self.anio) + "/" + str(self.numero_resolucion)
+
+def upload_to_declaracion(instance, filename):
+    base, extension = os.path.splitext(filename)
+    return 'Declaraciones/Declaracion-{0}-{1:04d}{2}'.format(instance.anio, instance.numero_declaracion, extension)
+
+class Declaracion(Documento):
+    numero_declaracion = models.PositiveIntegerField(default=1)
+    anio = models.IntegerField(default=date.today().year)
+    fecha_publicacion = models.DateField(blank=True, null=True)
+    archivo_pdf = models.FileField(upload_to=upload_to_declaracion, validators=[FileExtensionValidator(['pdf'], message="ERROR, el archivo tiene que estar en formato PDF.")], blank=True, null=True)
+
+    def __str__(self):
+        return "Declaracion- " + str(self.anio) + "/" + str(self.numero_declaracion)

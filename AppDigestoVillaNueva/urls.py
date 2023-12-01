@@ -24,4 +24,11 @@ urlpatterns = [
     path('resolucion-publicar-masivo', ResolucionPublicarMasivoView.as_view(), name='resolucion_public_masivo'),
     path('resolucion-eliminar/<int:pk>/', ResolucionDeleteView.as_view(), name='resolucion_delete'),
     path('resolucion-pdf/<int:pk>/', resolucion_pdf_view, name='resolucion_pdf'),
+    path('declaracion-crear/', DeclaracionCreateView.as_view(), name='declaracion_create'),
+    path('declaracion-editar/<int:pk>/', DeclaracionUpdateView.as_view(), name='declaracion_update'),
+    path('declaracion-listar/', DeclaracionListView.as_view(), name='declaracion_list'),
+    path('declaracion-publicar/<int:pk>/', DeclaracionPublicarView.as_view(), name='declaracion_public'),
+    path('declaracion-publicar-masivo', DeclaracionPublicarMasivoView.as_view(), name='declaracion_public_masivo'),
+    path('declaracion-eliminar/<int:pk>/', DeclaracionDeleteView.as_view(), name='declaracion_delete'),
+    path('declaracion-pdf/<int:pk>/', declaracion_pdf_view, name='declaracion_pdf'),
 ]
