@@ -2,13 +2,13 @@
 
 {% block content %}
 <div class="container mt-5">
-    <h2>Listado de Decretos <a href="{% url 'decreto_create' %}" class="btn btn-primary float-end">Nuevo Decreto <i class="bi bi-file-earmark-plus"></i></a></h2>
+    <h2>Listado de Resoluciones <a href="{% url 'resolucion_create' %}" class="btn btn-primary float-end">Nueva Resolución <i class="bi bi-file-earmark-plus"></i></a></h2>
     
     <br>
-    <table id="decretoTable" class="table table-hover">
+    <table id="resolucionTable" class="table table-hover">
         <thead>
             <tr>
-                <th scope="col" class="col-1">Decreto</th>
+                <th scope="col" class="col-1">Resolucion</th>
                 <th scope="col" class="col-2">Fecha de Publicación</th>
                 <th scope="col" class="col-1">Archivo</th>
                 <th scope="col" class="col-6">Descripción</th>
@@ -16,43 +16,43 @@
             </tr>
         </thead>
         <tbody>
-            {% for decreto in object_list %}
+            {% for resolucion in object_list %}
             <tr>
-                <td>{{ decreto.numero_decreto|stringformat:"04d" }}/{{ decreto.anio|stringformat:"s"|slice:"-2:" }}</td>
+                <td>{{ resolucion.numero_resolucion|stringformat:"04d" }}/{{ resolucion.anio|stringformat:"s"|slice:"-2:" }}</td>
                 <td>
-                  {% if decreto.fecha_publicacion %}
-                  {{ decreto.fecha_publicacion }}
+                  {% if resolucion.fecha_publicacion %}
+                  {{ resolucion.fecha_publicacion }}
                   {% else %}
                   No publicado
                   {% endif %}
                 </td>
-                <td>{% if decreto.archivo_pdf %}Sí{% else %}No{% endif %}</td>
-                <td>{{ decreto.descripcion }}</td>
+                <td>{% if resolucion.archivo_pdf %}Sí{% else %}No{% endif %}</td>
+                <td>{{ resolucion.descripcion }}</td>
                 <td>
-                  {% if not decreto.publicado %}
+                  {% if not resolucion.publicado %}
                   <span data-bs-toggle="tooltip" data-bs-placement="top" title="Editar">
-                    <button type="button" class="btn btn-primary" onclick="window.location.href='{% url 'decreto_update' decreto.id %}'"><i class="bi bi-pencil"></i></button>
+                    <button type="button" class="btn btn-primary" onclick="window.location.href='{% url 'resolucion_update' resolucion.id %}'"><i class="bi bi-pencil"></i></button>
                   </span>
                   {% endif %}
-                  {% if decreto.archivo_pdf %}
+                  {% if resolucion.archivo_pdf %}
                   <span data-bs-toggle="tooltip" data-bs-placement="top" title="Imprimir">
-                    <button type="button" class="btn btn-success" onclick="window.open('{% url 'decreto_pdf' decreto.id %}', '_blank')"><i class="bi bi-printer"></i></button>
+                    <button type="button" class="btn btn-success" onclick="window.open('{% url 'resolucion_pdf' resolucion.id %}', '_blank')"><i class="bi bi-printer"></i></button>
                   </span>
                   {% endif %}
-                  {% if not decreto.publicado and decreto.archivo_pdf %}
+                  {% if not resolucion.publicado and resolucion.archivo_pdf %}
                   <span data-bs-toggle="tooltip" data-bs-placement="top" title="Publicar">
-                    <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#publicModal{{ decreto.id }}"><i class="bi bi-book"></i></button>
+                    <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#publicModal{{ resolucion.id }}"><i class="bi bi-book"></i></button>
                   </span>
                   {% endif %}
-                  {% if not decreto.publicado %}
+                  {% if not resolucion.publicado %}
                   <span data-bs-toggle="tooltip" data-bs-placement="top" title="Eliminar">
-                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal{{ decreto.id }}"><i class="bi bi-trash"></i></button>
+                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal{{ resolucion.id }}"><i class="bi bi-trash"></i></button>
                   </span>
                   {% endif %}
                 </td>
             </tr>
             <!-- Inicio Modal Eliminar -->
-            <div class="modal fade" id="deleteModal{{ decreto.id }}" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+            <div class="modal fade" id="deleteModal{{ resolucion.id }}" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
               <div class="modal-dialog">
                 <div class="modal-content">
                   <div class="modal-header">
@@ -60,19 +60,19 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                   </div>
                   <div class="modal-body">
-                    <p class="text-center">¿Estás seguro de que deseas eliminar el <b>Decreto Nº {{ decreto.numero_decreto|stringformat:"04d" }}/{{ decreto.anio|stringformat:"s"|slice:"-2:" }}</b>?</p>
+                    <p class="text-center">¿Estás seguro de que deseas eliminar la <b>Resolucion Nº {{ resolucion.numero_resolucion|stringformat:"04d" }}/{{ resolucion.anio|stringformat:"s"|slice:"-2:" }}</b>?</p>
                     <p class="text-danger text-center"><b>¡Una vez eliminado no podrás recuperarlo!</b></p>
                   </div>
                   <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <a href="{% url 'decreto_delete' decreto.id %}" class="btn btn-danger">Eliminar</a>
+                    <a href="{% url 'resolucion_delete' resolucion.id %}" class="btn btn-danger">Eliminar</a>
                   </div>
                 </div>
               </div>
             </div>
             <!-- Fin Modal Eliminar -->
             <!-- Inicio Modal Publicar -->
-            <div class="modal fade" id="publicModal{{ decreto.id }}" tabindex="-1" aria-labelledby="publicModalLabel" aria-hidden="true">
+            <div class="modal fade" id="publicModal{{ resolucion.id }}" tabindex="-1" aria-labelledby="publicModalLabel" aria-hidden="true">
               <div class="modal-dialog">
                 <div class="modal-content">
                   <div class="modal-header">
@@ -80,12 +80,12 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                   </div>
                   <div class="modal-body">
-                    <p class="text-center">¿Estás seguro de que deseas publicar el <b>Decreto Nº {{ decreto.numero_decreto|stringformat:"04d" }}/{{ decreto.anio|stringformat:"s"|slice:"-2:" }}</b>?</p>
+                    <p class="text-center">¿Estás seguro de que deseas publicar la <b>Resolucion Nº {{ resolucion.numero_resolucion|stringformat:"04d" }}/{{ resolucion.anio|stringformat:"s"|slice:"-2:" }}</b>?</p>
                     <p class="text-danger text-center"><b>¡Una vez publicado no podrás deshacer la acción!</b></p>
                   </div>
                   <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <a href="{% url 'decreto_public' decreto.id %}" class="btn btn-danger">Publicar</a>
+                    <a href="{% url 'resolucion_public' resolucion.id %}" class="btn btn-danger">Publicar</a>
                   </div>
                 </div>
               </div>
@@ -109,7 +109,7 @@
 <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
 <script>
 $(document).ready(function() {
-    var table = $('#decretoTable').DataTable({
+    var table = $('#resolucionTable').DataTable({
         "order": [[ 0, "desc" ]],
         "language": {
             "url": "//cdn.datatables.net/plug-ins/1.10.22/i18n/Spanish.json",
@@ -144,7 +144,7 @@ $(document).ready(function() {
     // Mover el campo de búsqueda y el select de cantidad de registros a la misma fila
     $('div.dataTables_filter').css('float', 'right');
     $('div.dataTables_length').css('float', 'left');
-    $('div.dataTables_filter').appendTo('#decretoTable_length');
+    $('div.dataTables_filter').appendTo('#resolucionTable_length');
 });
 </script>
 {% endblock %}

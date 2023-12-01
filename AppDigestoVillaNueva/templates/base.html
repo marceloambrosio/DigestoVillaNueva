@@ -39,7 +39,7 @@
                         <ul class="dropdown-menu">
                           <li><a class="dropdown-item" href="{% url 'decreto_create' %}">Nuevo</a></li>
                           <li><a class="dropdown-item" href="{% url 'decreto_list' %}">Listado</a></li>
-                          <li><a class="dropdown-item" href="{% url 'decreto_public_masivo' %}">Publicacion masiva</a></li>
+                          <li><a class="dropdown-item" href="{% url 'decreto_public_masivo' %}">Publicación masiva</a></li>
                         </ul>
                       </li>
                     <li class="nav-item dropdown">
@@ -49,7 +49,17 @@
                         <ul class="dropdown-menu">
                           <li><a class="dropdown-item" href="{% url 'ordenanza_create' %}">Nueva</a></li>
                           <li><a class="dropdown-item" href="{% url 'ordenanza_list' %}">Listado</a></li>
-                          <li><a class="dropdown-item" href="{% url 'ordenanza_public_masivo' %}">Publicacion masiva</a></li>
+                          <li><a class="dropdown-item" href="{% url 'ordenanza_public_masivo' %}">Publicación masiva</a></li>
+                        </ul>
+                      </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                          Resoluciones
+                        </a>
+                        <ul class="dropdown-menu">
+                          <li><a class="dropdown-item" href="{% url 'resolucion_create' %}">Nueva</a></li>
+                          <li><a class="dropdown-item" href="{% url 'resolucion_list' %}">Listado</a></li>
+                          <li><a class="dropdown-item" href="{% url 'resolucion_public_masivo' %}">Publicación masiva</a></li>
                         </ul>
                       </li>
                 </ul>

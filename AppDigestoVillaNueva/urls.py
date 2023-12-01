@@ -17,4 +17,11 @@ urlpatterns = [
     path('ordenanza-publicar-masivo', OrdenanzaPublicarMasivoView.as_view(), name='ordenanza_public_masivo'),
     path('ordenanza-eliminar/<int:pk>/', OrdenanzaDeleteView.as_view(), name='ordenanza_delete'),
     path('ordenanza-pdf/<int:pk>/', ordenanza_pdf_view, name='ordenanza_pdf'),
+    path('resolucion-crear/', ResolucionCreateView.as_view(), name='resolucion_create'),
+    path('resolucion-editar/<int:pk>/', ResolucionUpdateView.as_view(), name='resolucion_update'),
+    path('resolucion-listar/', ResolucionListView.as_view(), name='resolucion_list'),
+    path('resolucion-publicar/<int:pk>/', ResolucionPublicarView.as_view(), name='resolucion_public'),
+    path('resolucion-publicar-masivo', ResolucionPublicarMasivoView.as_view(), name='resolucion_public_masivo'),
+    path('resolucion-eliminar/<int:pk>/', ResolucionDeleteView.as_view(), name='resolucion_delete'),
+    path('resolucion-pdf/<int:pk>/', resolucion_pdf_view, name='resolucion_pdf'),
 ]

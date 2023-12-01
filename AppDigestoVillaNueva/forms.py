@@ -1,5 +1,5 @@
 from django import forms
-from .models import Decreto, Ordenanza
+from .models import Decreto, Ordenanza, Resolucion
 from django.forms import ModelForm, Textarea, NumberInput, Select, DateInput, FileInput
 
 class DecretoForm(forms.ModelForm):
@@ -26,6 +26,20 @@ class OrdenanzaForm(forms.ModelForm):
             'archivo_adjunto': Select(attrs={'class': 'form-control'}),    
             'archivo_pdf': FileInput(attrs={'class': 'form-control', 'accept': '.pdf'}), 
             'numero_ordenanza': NumberInput(attrs={'class': 'form-control'}),    
+            'anio': NumberInput(attrs={'class': 'form-control'}),    
+            'fecha_publicacion': DateInput(attrs={'class': 'form-control','type': 'date',}),    
+        }
+
+class ResolucionForm(forms.ModelForm):
+    class Meta:
+        model = Resolucion
+        fields = ['fecha_creacion', 'descripcion', 'archivo_pdf', 'publicado', 'eliminado', 'numero_resolucion', 'anio', 'fecha_publicacion']
+        widgets = {
+            'fecha_creacion': DateInput(attrs={'class': 'form-control','type': 'date',}),
+            'descripcion': Textarea(attrs={'class': 'form-control'}),    
+            'archivo_adjunto': Select(attrs={'class': 'form-control'}),    
+            'archivo_pdf': FileInput(attrs={'class': 'form-control', 'accept': '.pdf'}), 
+            'numero_resolucion': NumberInput(attrs={'class': 'form-control'}),    
             'anio': NumberInput(attrs={'class': 'form-control'}),    
             'fecha_publicacion': DateInput(attrs={'class': 'form-control','type': 'date',}),    
         }
