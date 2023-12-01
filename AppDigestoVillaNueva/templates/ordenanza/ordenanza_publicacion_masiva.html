@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<br>
+<div class="card" style="width: 100%;">
+  <div class="card-body">
+    <h4 class="card-title">Publicación masiva de ordenanzas</h4>
+    <form method="post">
+      {% csrf_token %}
+      <br>
+      <div class="row">
+        <div class="col-6">
+          <h6><label for="fecha_desde">Desde:</label></h6>
+          <input type="date" class="form-control" id="fecha_desde" name="fecha_desde" required>
+        </div>
+        <div class="col-6">
+          <h6><label for="fecha_hasta">Hasta:</label></h6>
+          <input type="date" class="form-control" id="fecha_hasta" name="fecha_hasta" required>
+        </div>
+      </div>
+      <br>
+      <input type="submit" class="btn btn-primary float-end" value="Mostrar ordenanzas">
+    </form>
+  </div>
+</div>
+{% endblock %}

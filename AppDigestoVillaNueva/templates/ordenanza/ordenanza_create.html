@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<br>
+<div class="card" style="width: 100%;">
+  <div class="card-body">
+    <h4 class="card-title">Cargar Nueva Ordenanza</h4>
+    <form method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+      <div class="mb-3">
+        <br>
+        <div class="row">
+          <div class="col-2">
+            <h6>Número de Ordenanza</h6>
+            {{ form.numero_ordenanza }}
+          </div>
+          <div class="col-2">
+            <h6>Año</h6>
+            {{ form.anio }}
+          </div>
+          <div class="col-4">
+            <h6>Fecha Creación</h6>
+            {{ form.fecha_creacion }}
+          </div>
+          <div class="col-4">
+            <h6>Fecha Publicación (Si corresponde)</h6>
+            {{ form.fecha_publicacion }}
+          </div>
+        </div>
+        <br>
+        <div class="row">
+          <div class="col-12">
+            <h6>Descripción</h6>
+            {{ form.descripcion }}
+          </div>
+        </div>
+        <br>
+        <div class="row">
+          <div class="col-12">
+            <h6>Archivo PDF</h6>
+            {% if form.archivo_pdf.errors %}
+                <div class="alert alert-danger">
+                    {{ form.archivo_pdf.errors }}
+                </div>
+            {% endif %}
+            {{ form.archivo_pdf }}
+          </div>
+        </div>
+      </div>
+      <button class="btn btn-primary float-end">Guardar</button>
+    </form>
+  </div>
+</div>
+{% endblock %}

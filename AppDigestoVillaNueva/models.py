@@ -29,3 +29,16 @@ class Decreto(Documento):
 
     def __str__(self):
         return "Decreto- " + str(self.anio) + "/" + str(self.numero_decreto)
+    
+def upload_to_ordenanza(instance, filename):
+    base, extension = os.path.splitext(filename)
+    return 'Ordenanzas/Ordenanza-{0}-{1:04d}{2}'.format(instance.anio, instance.numero_ordenanza, extension)
+
+class Ordenanza(Documento):
+    numero_ordenanza = models.PositiveIntegerField(default=1)
+    anio = models.IntegerField(default=date.today().year)
+    fecha_publicacion = models.DateField(blank=True, null=True)
+    archivo_pdf = models.FileField(upload_to=upload_to_ordenanza, validators=[FileExtensionValidator(['pdf'], message="ERROR, el archivo tiene que estar en formato PDF.")], blank=True, null=True)
+
+    def __str__(self):
+        return "Ordenanza- " + str(self.anio) + "/" + str(self.numero_ordenanza)

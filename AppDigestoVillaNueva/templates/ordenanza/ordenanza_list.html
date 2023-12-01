@@ -1,0 +1,150 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>Listado de Ordenanzas <a href="{% url 'ordenanza_create' %}" class="btn btn-primary float-end">Nuevo Ordenanza <i class="bi bi-file-earmark-plus"></i></a></h2>
+    
+    <br>
+    <table id="ordenanzaTable" class="table table-hover">
+        <thead>
+            <tr>
+                <th scope="col" class="col-1">Ordenanza</th>
+                <th scope="col" class="col-2">Fecha de Publicación</th>
+                <th scope="col" class="col-1">Archivo</th>
+                <th scope="col" class="col-6">Descripción</th>
+                <th scope="col" class="col-2">Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for ordenanza in object_list %}
+            <tr>
+                <td>{{ ordenanza.numero_ordenanza|stringformat:"04d" }}/{{ ordenanza.anio|stringformat:"s"|slice:"-2:" }}</td>
+                <td>
+                  {% if ordenanza.fecha_publicacion %}
+                  {{ ordenanza.fecha_publicacion }}
+                  {% else %}
+                  No publicado
+                  {% endif %}
+                </td>
+                <td>{% if ordenanza.archivo_pdf %}Sí{% else %}No{% endif %}</td>
+                <td>{{ ordenanza.descripcion }}</td>
+                <td>
+                  {% if not ordenanza.publicado %}
+                  <span data-bs-toggle="tooltip" data-bs-placement="top" title="Editar">
+                    <button type="button" class="btn btn-primary" onclick="window.location.href='{% url 'ordenanza_update' ordenanza.id %}'"><i class="bi bi-pencil"></i></button>
+                  </span>
+                  {% endif %}
+                  {% if ordenanza.archivo_pdf %}
+                  <span data-bs-toggle="tooltip" data-bs-placement="top" title="Imprimir">
+                    <button type="button" class="btn btn-success" onclick="window.open('{% url 'ordenanza_pdf' ordenanza.id %}', '_blank')"><i class="bi bi-printer"></i></button>
+                  </span>
+                  {% endif %}
+                  {% if not ordenanza.publicado and ordenanza.archivo_pdf %}
+                  <span data-bs-toggle="tooltip" data-bs-placement="top" title="Publicar">
+                    <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#publicModal{{ ordenanza.id }}"><i class="bi bi-book"></i></button>
+                  </span>
+                  {% endif %}
+                  {% if not ordenanza.publicado %}
+                  <span data-bs-toggle="tooltip" data-bs-placement="top" title="Eliminar">
+                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal{{ ordenanza.id }}"><i class="bi bi-trash"></i></button>
+                  </span>
+                  {% endif %}
+                </td>
+            </tr>
+            <!-- Inicio Modal Eliminar -->
+            <div class="modal fade" id="deleteModal{{ ordenanza.id }}" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="deleteModalLabel">Confirmar eliminación</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                    <p class="text-center">¿Estás seguro de que deseas eliminar la <b>Ordenanza Nº {{ ordenanza.numero_ordenanza|stringformat:"04d" }}/{{ ordenanza.anio|stringformat:"s"|slice:"-2:" }}</b>?</p>
+                    <p class="text-danger text-center"><b>¡Una vez eliminado no podrás recuperarla!</b></p>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <a href="{% url 'ordenanza_delete' ordenanza.id %}" class="btn btn-danger">Eliminar</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Fin Modal Eliminar -->
+            <!-- Inicio Modal Publicar -->
+            <div class="modal fade" id="publicModal{{ ordenanza.id }}" tabindex="-1" aria-labelledby="publicModalLabel" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="publicModalLabel">Confirmar publicación</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                    <p class="text-center">¿Estás seguro de que deseas publicar la <b>Ordenanza Nº {{ ordenanza.numero_ordenanza|stringformat:"04d" }}/{{ ordenanza.anio|stringformat:"s"|slice:"-2:" }}</b>?</p>
+                    <p class="text-danger text-center"><b>¡Una vez publicado no podrás deshacer la acción!</b></p>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <a href="{% url 'ordenanza_public' ordenanza.id %}" class="btn btn-danger">Publicar</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Fin Modal Publicar -->
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<script>
+  // Inicializar los tooltips
+  var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+  var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+      return new bootstrap.Tooltip(tooltipTriggerEl);
+  });
+</script>
+
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
+<script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+<script>
+$(document).ready(function() {
+    var table = $('#ordenanzaTable').DataTable({
+        "order": [[ 0, "desc" ]],
+        "language": {
+            "url": "//cdn.datatables.net/plug-ins/1.10.22/i18n/Spanish.json",
+            "sLengthMenu": "_MENU_",
+            "sInfo": "<h6 class='float-end'>Total de registros _TOTAL_</h6>"
+        },
+        "initComplete": function() {
+            // Aplicar clases de Bootstrap al campo de búsqueda
+            $('div.dataTables_filter input').attr('placeholder', 'Buscar..');
+            $('div.dataTables_filter label').contents().filter(function() {
+                return this.nodeType === 3; // Node.TEXT_NODE
+            }).remove();
+
+            // Aplicar clases de Bootstrap al select de cantidad de registros a mostrar
+            $('div.dataTables_length label').contents().filter(function() {
+                return this.nodeType === 3; // Node.TEXT_NODE
+            }).remove();
+            $('div.dataTables_length label').prepend('Registros por página: ');
+
+            // Aplicar clases de Bootstrap a la paginación
+            $('div.dataTables_paginate').addClass('justify-content-center');
+            $('div.dataTables_paginate a').addClass('btn btn-primary');
+            $('div.dataTables_paginate a').css('margin', '0 2px');
+        },
+        "drawCallback": function() {
+            // Aplicar clases de Bootstrap a la paginación en cada cambio de página
+            $('div.dataTables_paginate a');
+            $('div.dataTables_paginate a').css('margin', '0 2px');
+        }
+    });
+
+    // Mover el campo de búsqueda y el select de cantidad de registros a la misma fila
+    $('div.dataTables_filter').css('float', 'right');
+    $('div.dataTables_length').css('float', 'left');
+    $('div.dataTables_filter').appendTo('#ordenanzaTable_length');
+});
+</script>
+{% endblock %}
