@@ -1,16 +1,21 @@
 from django.db import models
 from datetime import date
 from django.core.validators import FileExtensionValidator
+from django.contrib.auth.models import User
+from django.utils import timezone
 import os
 
 
 # Create your models here.
 
 class Documento(models.Model):
-    fecha_creacion = models.DateField(default=date.today)
+    fecha_creacion = models.DateField(default=timezone.now)
     descripcion = models.TextField(max_length=2000)
     publicado = models.BooleanField(default=False)
     eliminado = models.BooleanField(default=False)
+    creado_por = models.ForeignKey(User, on_delete=models.PROTECT, related_name='documentos_creados')
+    ultima_modificacion = models.DateTimeField(auto_now=True)
+    modificado_por = models.ForeignKey(User, on_delete=models.PROTECT, related_name='documentos_modificados')
 
 def upload_to_decreto(instance, filename):
     base, extension = os.path.splitext(filename)

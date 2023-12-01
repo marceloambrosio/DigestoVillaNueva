@@ -4,8 +4,8 @@ from django.views.generic import CreateView, UpdateView, ListView, View
 from django.urls import reverse_lazy
 from datetime import date
 from django.db.models import Max
-from .models import Decreto
-from .forms import DecretoForm
+from ..models import Decreto
+from ..forms import DecretoForm
 from datetime import datetime
 
 # Create your views here.
@@ -39,6 +39,10 @@ class DecretoCreateView(CreateView):
         return {'numero_decreto': max_decreto}
     
     def form_valid(self, form):
+        # Asigna el usuario actual como creador y modificador del decreto
+        form.instance.creado_por = self.request.user
+        form.instance.modificado_por = self.request.user
+
         # Obtén la fecha de publicación del formulario
         fecha_publicacion = form.cleaned_data.get('fecha_publicacion')
 
@@ -56,6 +60,9 @@ class DecretoUpdateView(UpdateView):
     success_url = reverse_lazy('decreto_list')
 
     def form_valid(self, form):
+        # Asigna el usuario actual como modificador del decreto
+        form.instance.modificado_por = self.request.user
+
         # Obtén la fecha de publicación del formulario
         fecha_publicacion = form.cleaned_data.get('fecha_publicacion')
 
