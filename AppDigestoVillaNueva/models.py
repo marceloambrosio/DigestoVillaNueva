@@ -68,3 +68,17 @@ class Declaracion(Documento):
 
     def __str__(self):
         return "Declaracion- " + str(self.anio) + "/" + str(self.numero_declaracion)
+
+def upload_to_boletin(instance, filename):
+    base, extension = os.path.splitext(filename)
+    return 'BoletinOficial/Boletin-{0}{1}'.format(instance.fecha_creacion, extension)
+
+class BoletinOficial(models.Model):
+    fecha_creacion = models.DateField(default=timezone.now)
+    fecha_desde = models.DateField()
+    fecha_hasta = models.DateField()
+    decretos = models.BooleanField(default=False)
+    resoluciones = models.BooleanField(default=False)
+    ordenanzas = models.BooleanField(default=False)
+    declaraciones = models.BooleanField(default=False)
+    archivo_pdf = models.FileField(upload_to=upload_to_boletin, blank=True, null=True)

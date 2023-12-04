@@ -1,5 +1,7 @@
 from django.urls import path
 from django.contrib.auth.decorators import login_required
+from django.conf import settings
+from django.conf.urls.static import static
 from .views import *
 
 urlpatterns = [
@@ -32,4 +34,6 @@ urlpatterns = [
     path('declaracion-publicar-masivo', DeclaracionPublicarMasivoView.as_view(), name='declaracion_public_masivo'),
     path('declaracion-eliminar/<int:pk>/', DeclaracionDeleteView.as_view(), name='declaracion_delete'),
     path('declaracion-pdf/<int:pk>/', declaracion_pdf_view, name='declaracion_pdf'),
-]
+    path('boletinoficial-crear', crear_boletin, name='boletin_create'),
+    path('boletinoficial/<int:pk>/', boletin_detail, name='boletin_detail'),
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

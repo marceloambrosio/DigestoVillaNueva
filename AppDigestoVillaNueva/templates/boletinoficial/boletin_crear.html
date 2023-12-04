@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<br>
+<div class="card" style="width: 100%;">
+  <div class="card-body">
+    <h4 class="card-title">Generar Nuevo Boletín Oficial</h4>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Generar boletín</button>
+    </form>
+  </div>
+</div>
+{% endblock %}

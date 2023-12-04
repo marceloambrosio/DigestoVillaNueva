@@ -1,5 +1,5 @@
 from django import forms
-from .models import Decreto, Ordenanza, Resolucion, Declaracion
+from .models import Decreto, Ordenanza, Resolucion, Declaracion, BoletinOficial
 from django.forms import ModelForm, Textarea, NumberInput, Select, DateInput, FileInput
 
 class DecretoForm(forms.ModelForm):
@@ -56,4 +56,14 @@ class DeclaracionForm(forms.ModelForm):
             'numero_declaracion': NumberInput(attrs={'class': 'form-control'}),    
             'anio': NumberInput(attrs={'class': 'form-control'}),    
             'fecha_publicacion': DateInput(attrs={'class': 'form-control','type': 'date',}),    
+        }
+
+class BoletinOficialForm(forms.ModelForm):
+    class Meta:
+        model = BoletinOficial
+        fields = ['fecha_creacion', 'fecha_desde', 'fecha_hasta', 'decretos', 'resoluciones', 'ordenanzas', 'declaraciones']
+        widgets = {
+            'fecha_creacion': DateInput(attrs={'class': 'form-control','type': 'date',}),
+            'fecha_desde': DateInput(attrs={'class': 'form-control','type': 'date',}),
+            'fecha_hasta': DateInput(attrs={'class': 'form-control','type': 'date',}),
         }

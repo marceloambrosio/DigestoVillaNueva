@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<br>
+<h1>Boletín Oficial {{ boletin.fecha_creacion }}</h1>
+    <p>Fecha desde: {{ boletin.fecha_desde }}</p>
+    <p>Fecha hasta: {{ boletin.fecha_hasta }}</p>
+    <p>Decretos: {{ boletin.decretos }}</p>
+    <p>Resoluciones: {{ boletin.resoluciones }}</p>
+    <p>Ordenanzas: {{ boletin.ordenanzas }}</p>
+    <p>Declaraciones: {{ boletin.declaraciones }}</p>
+    <p><a href="{{ boletin.archivo_pdf.url }}">Descargar PDF</a></p>
+    <h2>Documentos:</h2>
+    <ul>
+        {% for documento in documentos %}
+            <li>{{ documento }}</li>
+        {% endfor %}
+    </ul>
+{% endblock %}
