@@ -6,9 +6,39 @@
   <div class="card-body">
     <h4 class="card-title">Generar Nuevo Boletín Oficial</h4>
     <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Generar boletín</button>
+      {% csrf_token %}
+      <br>
+      <div class="mb-3">
+        <div class="row">
+          <div class="col-4">
+            Fecha del boletín {{ form.fecha_creacion }}
+          </div>
+          <div class="col-4">
+            {{ form.fecha_desde.label_tag }} {{ form.fecha_desde }}
+          </div>
+          <div class="col-4">
+            {{ form.fecha_hasta.label_tag }} {{ form.fecha_hasta }}
+          </div>
+        </div>
+        <br>
+        <h6>Seleccione los documentos a mostrar en el boletín</h6>
+        <div>
+          <div class="form-check form-switch">
+            {{ form.decretos }} Decretos
+          </div>
+          <div class="form-check form-switch">
+            {{ form.resoluciones }} Resoluciones
+          </div>
+          <div class="form-check form-switch">
+            {{ form.ordenanzas }} Ordenanzas
+          </div>
+          <div class="form-check form-switch">
+            {{ form.declaraciones }} Declaraciones
+          </div>
+        </div>
+        <br>
+        <button class="btn btn-primary float-end" type="submit">Generar boletín</button>
+      </div>
     </form>
   </div>
 </div>

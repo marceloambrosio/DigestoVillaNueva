@@ -1,6 +1,6 @@
 from django import forms
 from .models import Decreto, Ordenanza, Resolucion, Declaracion, BoletinOficial
-from django.forms import ModelForm, Textarea, NumberInput, Select, DateInput, FileInput
+from django.forms import ModelForm, Textarea, NumberInput, Select, DateInput, FileInput, CheckboxInput
 
 class DecretoForm(forms.ModelForm):
     class Meta:
@@ -66,4 +66,8 @@ class BoletinOficialForm(forms.ModelForm):
             'fecha_creacion': DateInput(attrs={'class': 'form-control','type': 'date',}),
             'fecha_desde': DateInput(attrs={'class': 'form-control','type': 'date',}),
             'fecha_hasta': DateInput(attrs={'class': 'form-control','type': 'date',}),
+            'decretos': forms.CheckboxInput(attrs={'class': 'form-check-input', 'type': 'checkbox', 'role': 'switch'}),
+            'resoluciones': forms.CheckboxInput(attrs={'class': 'form-check-input', 'type': 'checkbox', 'role': 'switch'}),
+            'ordenanzas': forms.CheckboxInput(attrs={'class': 'form-check-input', 'type': 'checkbox', 'role': 'switch'}),
+            'declaraciones': forms.CheckboxInput(attrs={'class': 'form-check-input', 'type': 'checkbox', 'role': 'switch'}),
         }

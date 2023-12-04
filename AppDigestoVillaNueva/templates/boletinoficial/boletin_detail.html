@@ -2,18 +2,25 @@
 
 {% block content %}
 <br>
-<h1>Boletín Oficial {{ boletin.fecha_creacion }}</h1>
-    <p>Fecha desde: {{ boletin.fecha_desde }}</p>
-    <p>Fecha hasta: {{ boletin.fecha_hasta }}</p>
-    <p>Decretos: {{ boletin.decretos }}</p>
-    <p>Resoluciones: {{ boletin.resoluciones }}</p>
-    <p>Ordenanzas: {{ boletin.ordenanzas }}</p>
-    <p>Declaraciones: {{ boletin.declaraciones }}</p>
-    <p><a href="{{ boletin.archivo_pdf.url }}">Descargar PDF</a></p>
-    <h2>Documentos:</h2>
+<div class="card" style="width: 100%;">
+    <div class="card-body">
+        <h4 class="card-title">Boletín Oficial - {{ boletin.fecha_creacion|date:"d/m/Y" }}</h4>
+        <p>Incluye los documentos publicados entre las fechas <b>{{ boletin.fecha_desde|date:"d/m/Y" }}</b> y <b>{{ boletin.fecha_hasta|date:"d/m/Y" }}</b>.</p>
+        <!--     <h6>Incluye:</h6>
     <ul>
-        {% for documento in documentos %}
+        <li>Decretos: {{ boletin.decretos }}</li>
+        <li>Resoluciones: {{ boletin.resoluciones }}</li>
+        <li>Ordenanzas: {{ boletin.ordenanzas }}</li>
+        <li>Declaraciones: {{ boletin.declaraciones }}</li>
+    </ul> -->
+        <h6>Documentos:</h6>
+        <ul>
+            {% for documento in documentos %}
             <li>{{ documento }}</li>
-        {% endfor %}
-    </ul>
+            {% endfor %}
+        </ul>
+        <p><a class="btn btn-primary float-end" href="{{ boletin.archivo_pdf.url }}" target="_blank">Descargar Boletín
+                {{ boletin.fecha_creacion }}</a></p>
+    </div>
+</div>
 {% endblock %}
