@@ -77,8 +77,12 @@ class BoletinOficial(models.Model):
     fecha_creacion = models.DateField(default=timezone.now)
     fecha_desde = models.DateField()
     fecha_hasta = models.DateField()
+    publicado = models.BooleanField(default=False)
     decretos = models.BooleanField(default=False)
     resoluciones = models.BooleanField(default=False)
     ordenanzas = models.BooleanField(default=False)
     declaraciones = models.BooleanField(default=False)
     archivo_pdf = models.FileField(upload_to=upload_to_boletin, blank=True, null=True)
+
+    def __str__(self):
+        return "BoletinOficial-" + str(self.fecha_creacion)

@@ -34,6 +34,10 @@ urlpatterns = [
     path('declaracion-publicar-masivo', DeclaracionPublicarMasivoView.as_view(), name='declaracion_public_masivo'),
     path('declaracion-eliminar/<int:pk>/', DeclaracionDeleteView.as_view(), name='declaracion_delete'),
     path('declaracion-pdf/<int:pk>/', declaracion_pdf_view, name='declaracion_pdf'),
-    path('boletinoficial-crear', crear_boletin, name='boletin_create'),
-    path('boletinoficial/<int:pk>/', boletin_detail, name='boletin_detail'),
+    path('boletinoficial-crear', crear_boletin, name='boletinoficial_create'),
+    path('boletinoficial/<int:pk>/', boletin_detail, name='boletinoficial_detail'),
+    path('boletinoficial-listar/', BoletinOficialListView.as_view(), name='boletinoficial_list'),
+    path('boletinoficial-pdf/<int:pk>/', boletin_pdf_view, name='boletinoficial_pdf'),
+    path('boletinoficial-publicar/<int:pk>/', BoletinOficialPublicarView.as_view(), name='boletinoficial_public'),
+    path('boletinoficial-eliminar/<int:pk>/', BoletinOficialDeleteView.as_view(), name='boletinoficial_delete'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

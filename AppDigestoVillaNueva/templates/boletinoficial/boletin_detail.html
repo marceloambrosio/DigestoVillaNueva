@@ -4,6 +4,8 @@
 <br>
 <div class="card" style="width: 100%;">
     <div class="card-body">
+        <h3>¡Boletín generado correctamente!</h3>
+        <br>
         <h4 class="card-title">Boletín Oficial - {{ boletin.fecha_creacion|date:"d/m/Y" }}</h4>
         <p>Incluye los documentos publicados entre las fechas <b>{{ boletin.fecha_desde|date:"d/m/Y" }}</b> y <b>{{ boletin.fecha_hasta|date:"d/m/Y" }}</b>.</p>
         <!--     <h6>Incluye:</h6>
@@ -19,8 +21,8 @@
             <li>{{ documento }}</li>
             {% endfor %}
         </ul>
-        <p><a class="btn btn-primary float-end" href="{{ boletin.archivo_pdf.url }}" target="_blank">Descargar Boletín
-                {{ boletin.fecha_creacion }}</a></p>
+        <a class="btn btn-primary float-end" href="{% url 'boletinoficial_list' %}">Ir a listado</a>
+        <a class="btn btn-success float-end" href="{{ boletin.archivo_pdf.url }}" target="_blank">Descargar Boletín {{ boletin.fecha_creacion|date:"d/m/Y" }}</a>
     </div>
 </div>
 {% endblock %}

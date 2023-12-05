@@ -69,6 +69,15 @@
                           <li><a class="dropdown-item" href="{% url 'declaracion_public_masivo' %}">Publicación masiva</a></li>
                         </ul>
                       </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                          Boletín Oficial
+                        </a>
+                        <ul class="dropdown-menu">
+                          <li><a class="dropdown-item" href="{% url 'boletinoficial_create' %}">Nuevo</a></li>
+                          <li><a class="dropdown-item" href="{% url 'boletinoficial_list' %}">Listado</a></li>
+                        </ul>
+                      </li>
                 </ul>
             </div>
         </div>
