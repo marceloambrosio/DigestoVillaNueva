@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-v4+ms_bb@g0_7cxokh3i^k@p@nu+$fak-d*uqjd%hsa5oqc5w(
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -134,3 +134,21 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
+
+
+#LOGIN
+LOGIN_REDIRECT_URL = '/home'
+
+LOGIN_URL = '/login/'
+
+LOGIN_TEMPLATE = '/registration/login.html'
+
+LOGOUT_REDIRECT_URL = '/login'
+
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'
+
+SESSION_COOKIE_AGE = None
+
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+
+SESSION_COOKIE_AGE = 1800  # 30 minutos (en segundos)

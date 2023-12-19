@@ -2,6 +2,7 @@ from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.generic import CreateView, UpdateView, ListView, View
 from django.urls import reverse_lazy
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from datetime import date
 from django.db.models import Max
 from ..models import Decreto
@@ -10,11 +11,12 @@ from datetime import datetime
 
 # Create your views here.
 
-class DecretoCreateView(CreateView):
+class DecretoCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     model = Decreto
     form_class = DecretoForm
     template_name = "decreto/decreto_create.html"
     success_url = reverse_lazy('decreto_list')
+    permission_required = 'AppDigestoVillaNueva.add_decreto'
 
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST, request.FILES)
@@ -53,11 +55,12 @@ class DecretoCreateView(CreateView):
         # Llama al método form_valid de la clase base para continuar con el procesamiento estándar
         return super().form_valid(form)
 
-class DecretoUpdateView(UpdateView):
+class DecretoUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     model = Decreto
     form_class = DecretoForm
     template_name = "decreto/decreto_edit.html"
     success_url = reverse_lazy('decreto_list')
+    permission_required = 'AppDigestoVillaNueva.change_decreto'
 
     def form_valid(self, form):
         # Asigna el usuario actual como modificador del decreto
@@ -73,17 +76,19 @@ class DecretoUpdateView(UpdateView):
         # Llama al método form_valid de la clase base para continuar con el procesamiento estándar
         return super().form_valid(form)
 
-class DecretoListView(ListView):
+class DecretoListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
     model = Decreto
     template_name = "decreto/decreto_list.html"
     context_object_name = 'decretos'
+    permission_required = 'AppDigestoVillaNueva.view_decreto'
     
     def get_queryset(self):
         return Decreto.objects.filter(eliminado=False).order_by('-anio', '-numero_decreto')
 
-class DecretoDeleteView(UpdateView):
+class DecretoDeleteView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     model = Decreto
     fields = ['eliminado']
+    permission_required = 'AppDigestoVillaNueva.delete_decreto'
 
     def get(self, request, *args, **kwargs):
         return self.delete(request, *args, **kwargs)
@@ -94,9 +99,10 @@ class DecretoDeleteView(UpdateView):
         self.object.save()
         return redirect('decreto_list')
     
-class DecretoPublicarView(UpdateView):
+class DecretoPublicarView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     model = Decreto
     fields = ['publicado']
+    permission_required = 'AppDigestoVillaNueva.admin_decreto'
 
     def get(self, request, *args, **kwargs):
         return self.post(request, *args, **kwargs)
@@ -108,7 +114,8 @@ class DecretoPublicarView(UpdateView):
         self.object.save()
         return redirect('decreto_list')
 
-class DecretoPublicarMasivoView(View):
+class DecretoPublicarMasivoView(LoginRequiredMixin, PermissionRequiredMixin, View):
+    permission_required = 'AppDigestoVillaNueva.admin_decreto'
     def get(self, request):
         return render(request, 'decreto/decreto_publicacion_masiva.html')
 

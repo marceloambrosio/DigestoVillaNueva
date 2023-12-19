@@ -1,0 +1,62 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digesto Villa Nueva</title>
+    <link rel="stylesheet" href="{% static 'style/bootstrap.min.css' %}">
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'style/bootstrap-icons.css' %}">
+</head>
+<body>
+    <section class="vh-100" style="background-color: #9EC8B9;">
+        <div class="container py-5 h-100">
+          <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col col-xl-10">
+              <div class="card" style="border-radius: 1rem;">
+                <div class="row g-0">
+                  <div class="col-md-6 col-lg-5 d-none d-md-block">
+                    <img src="{% static 'images/login/login.png' %}"
+                      alt="login form" class="img-fluid" style="border-radius: 1rem 0 0 1rem;" />
+                  </div>
+                  <div class="col-md-6 col-lg-7 d-flex align-items-center">
+                    <div class="card-body p-4 p-lg-5 text-black">
+      
+                      <form method="POST">
+                        
+                        <img class="float-end" src="{% static 'images/logo_mvn.png' %}" alt="logo_mvn" style="width: 20%; height: auto;">
+                        <div class="d-flex align-items-center mb-3">
+                          <span class="h1 fw-bold mb-0">Digesto</span>
+                        </div>
+                        
+                        <h5 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">Iniciar Sesión</h5>
+                        
+                        {% csrf_token %}
+                        <div class="form-outline mb-4">
+                          <input tipe="text" id="form2Example17" class="form-control form-control-lg" name="username"/>
+                          <label class="form-label" for="form2Example17">Usuario o Email</label>
+                        </div>
+      
+                        <div class="form-outline mb-4">
+                          <input type="password" id="form2Example27" class="form-control form-control-lg" name="password"/>
+                          <label class="form-label" for="form2Example27">Contraseña</label>
+                        </div>
+      
+                        <div class="float-end pt-1 mb-4">
+                          <button class="btn btn-dark btn-lg btn-block" type="submit">Ingresar</button>
+                        </div>
+      
+                      </form>
+      
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+</body>
+</html>
