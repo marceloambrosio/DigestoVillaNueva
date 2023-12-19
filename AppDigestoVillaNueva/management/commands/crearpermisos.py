@@ -8,17 +8,25 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         self.stdout.write('Creando permisos personalizados...')
-        self.create_custom_permission()
+        self.create_custom_permission('Decreto', 'admin_decreto', 'Admin decreto')
+        self.create_custom_permission('Resolucion', 'admin_resolucion', 'Admin resolucion')
+        self.create_custom_permission('Ordenanza', 'admin_ordenanza', 'Admin ordenanza')
+        self.create_custom_permission('Declaracion', 'admin_declaracion', 'Admin declaracion')
 
-    def create_custom_permission(self):
-        # Obtén el ContentType para el modelo Decreto
-        Decreto = global_apps.apps.get_model('AppDigestoVillaNueva', 'Decreto')
-        content_type = ContentType.objects.get_for_model(Decreto)
+    def create_custom_permission(self, model_name, codename, name):
+        # Obtén el ContentType para el modelo dado
+        Model = global_apps.apps.get_model('AppDigestoVillaNueva', model_name)
+        content_type = ContentType.objects.get_for_model(Model)
 
-        # Crea el permiso personalizado
-        permission = Permission.objects.create(
-            codename='admin_decreto',
-            name='Admin decreto',
-            content_type=content_type,
-        )
-        self.stdout.write('Permiso personalizado creado.')
+        # Verifica si el permiso ya existe
+        try:
+            permission = Permission.objects.get(content_type=content_type, codename=codename)
+            self.stdout.write(f'El permiso {name} ya existe.')
+        except Permission.DoesNotExist:
+            # Si el permiso no existe, créalo
+            permission = Permission.objects.create(
+                codename=codename,
+                name=name,
+                content_type=content_type,
+            )
+            self.stdout.write(f'Permiso personalizado {name} creado.')

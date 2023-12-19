@@ -2,6 +2,7 @@ from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.generic import CreateView, UpdateView, ListView, View
 from django.urls import reverse_lazy
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from datetime import date
 from django.db.models import Max
 from ..models import Ordenanza
@@ -15,6 +16,7 @@ class OrdenanzaCreateView(CreateView):
     form_class = OrdenanzaForm
     template_name = "ordenanza/ordenanza_create.html"
     success_url = reverse_lazy('ordenanza_list')
+    permission_required = 'AppDigestoVillaNueva.add_ordenanza'
 
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST, request.FILES)
@@ -58,6 +60,7 @@ class OrdenanzaUpdateView(UpdateView):
     form_class = OrdenanzaForm
     template_name = "ordenanza/ordenanza_edit.html"
     success_url = reverse_lazy('ordenanza_list')
+    permission_required = 'AppDigestoVillaNueva.change_ordenanza'
 
     def form_valid(self, form):
         # Asigna el usuario actual como modificador del ordenanza
@@ -77,6 +80,7 @@ class OrdenanzaListView(ListView):
     model = Ordenanza
     template_name = "ordenanza/ordenanza_list.html"
     context_object_name = 'ordenanza'
+    permission_required = 'AppDigestoVillaNueva.view_ordenanza'
     
     def get_queryset(self):
         return Ordenanza.objects.filter(eliminado=False).order_by('-anio', '-numero_ordenanza')
@@ -84,6 +88,7 @@ class OrdenanzaListView(ListView):
 class OrdenanzaDeleteView(UpdateView):
     model = Ordenanza
     fields = ['eliminado']
+    permission_required = 'AppDigestoVillaNueva.delete_ordenanza'
 
     def get(self, request, *args, **kwargs):
         return self.delete(request, *args, **kwargs)
@@ -97,6 +102,7 @@ class OrdenanzaDeleteView(UpdateView):
 class OrdenanzaPublicarView(UpdateView):
     model = Ordenanza
     fields = ['publicado']
+    permission_required = 'AppDigestoVillaNueva.admin_ordenanza'
 
     def get(self, request, *args, **kwargs):
         return self.post(request, *args, **kwargs)
@@ -109,6 +115,7 @@ class OrdenanzaPublicarView(UpdateView):
         return redirect('ordenanza_list')
 
 class OrdenanzaPublicarMasivoView(View):
+    permission_required = 'AppDigestoVillaNueva.admin_ordenanza'
     def get(self, request):
         return render(request, 'ordenanza/ordenanza_publicacion_masiva.html')
 

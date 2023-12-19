@@ -2,6 +2,7 @@ from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.generic import CreateView, UpdateView, ListView, View
 from django.urls import reverse_lazy
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from datetime import date
 from django.db.models import Max
 from ..models import Declaracion
@@ -10,11 +11,12 @@ from datetime import datetime
 
 # Create your views here.
 
-class DeclaracionCreateView(CreateView):
+class DeclaracionCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     model = Declaracion
     form_class = DeclaracionForm
     template_name = "declaracion/declaracion_create.html"
     success_url = reverse_lazy('declaracion_list')
+    permission_required = 'AppDigestoVillaNueva.add_declaracion'
 
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST, request.FILES)
@@ -53,11 +55,12 @@ class DeclaracionCreateView(CreateView):
         # Llama al método form_valid de la clase base para continuar con el procesamiento estándar
         return super().form_valid(form)
 
-class DeclaracionUpdateView(UpdateView):
+class DeclaracionUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     model = Declaracion
     form_class = DeclaracionForm
     template_name = "declaracion/declaracion_edit.html"
     success_url = reverse_lazy('declaracion_list')
+    permission_required = 'AppDigestoVillaNueva.change_declaracion'
 
     def form_valid(self, form):
         # Asigna el usuario actual como modificador del declaracion
@@ -73,17 +76,19 @@ class DeclaracionUpdateView(UpdateView):
         # Llama al método form_valid de la clase base para continuar con el procesamiento estándar
         return super().form_valid(form)
 
-class DeclaracionListView(ListView):
+class DeclaracionListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
     model = Declaracion
     template_name = "declaracion/declaracion_list.html"
     context_object_name = 'declaraciones'
+    permission_required = 'AppDigestoVillaNueva.view_declaracion'
     
     def get_queryset(self):
         return Declaracion.objects.filter(eliminado=False).order_by('-anio', '-numero_declaracion')
 
-class DeclaracionDeleteView(UpdateView):
+class DeclaracionDeleteView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     model = Declaracion
     fields = ['eliminado']
+    permission_required = 'AppDigestoVillaNueva.delete_declaracion'
 
     def get(self, request, *args, **kwargs):
         return self.delete(request, *args, **kwargs)
@@ -94,9 +99,10 @@ class DeclaracionDeleteView(UpdateView):
         self.object.save()
         return redirect('declaracion_list')
     
-class DeclaracionPublicarView(UpdateView):
+class DeclaracionPublicarView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     model = Declaracion
     fields = ['publicado']
+    permission_required = 'AppDigestoVillaNueva.admin_declaracion'
 
     def get(self, request, *args, **kwargs):
         return self.post(request, *args, **kwargs)
@@ -108,7 +114,8 @@ class DeclaracionPublicarView(UpdateView):
         self.object.save()
         return redirect('declaracion_list')
 
-class DeclaracionPublicarMasivoView(View):
+class DeclaracionPublicarMasivoView(LoginRequiredMixin, PermissionRequiredMixin, View):
+    permission_required = 'AppDigestoVillaNueva.admin_declaracion'
     def get(self, request):
         return render(request, 'declaracion/declaracion_publicacion_masiva.html')
 

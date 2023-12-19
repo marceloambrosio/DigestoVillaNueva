@@ -2,6 +2,7 @@ from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.generic import CreateView, UpdateView, ListView, View
 from django.urls import reverse_lazy
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from datetime import date
 from django.db.models import Max
 from ..models import Resolucion
@@ -15,6 +16,7 @@ class ResolucionCreateView(CreateView):
     form_class = ResolucionForm
     template_name = "resolucion/resolucion_create.html"
     success_url = reverse_lazy('resolucion_list')
+    permission_required = 'AppDigestoVillaNueva.add_resolucion'
 
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST, request.FILES)
@@ -58,6 +60,7 @@ class ResolucionUpdateView(UpdateView):
     form_class = ResolucionForm
     template_name = "resolucion/resolucion_edit.html"
     success_url = reverse_lazy('resolucion_list')
+    permission_required = 'AppDigestoVillaNueva.change_resolucion'
 
     def form_valid(self, form):
         # Asigna el usuario actual como modificador del resolucion
@@ -77,6 +80,7 @@ class ResolucionListView(ListView):
     model = Resolucion
     template_name = "resolucion/resolucion_list.html"
     context_object_name = 'resoluciones'
+    permission_required = 'AppDigestoVillaNueva.view_resolucion'
     
     def get_queryset(self):
         return Resolucion.objects.filter(eliminado=False).order_by('-anio', '-numero_resolucion')
@@ -84,6 +88,7 @@ class ResolucionListView(ListView):
 class ResolucionDeleteView(UpdateView):
     model = Resolucion
     fields = ['eliminado']
+    permission_required = 'AppDigestoVillaNueva.delete_resolucion'
 
     def get(self, request, *args, **kwargs):
         return self.delete(request, *args, **kwargs)
@@ -97,6 +102,7 @@ class ResolucionDeleteView(UpdateView):
 class ResolucionPublicarView(UpdateView):
     model = Resolucion
     fields = ['publicado']
+    permission_required = 'AppDigestoVillaNueva.admin_resolucion'
 
     def get(self, request, *args, **kwargs):
         return self.post(request, *args, **kwargs)
@@ -109,6 +115,7 @@ class ResolucionPublicarView(UpdateView):
         return redirect('resolucion_list')
 
 class ResolucionPublicarMasivoView(View):
+    permission_required = 'AppDigestoVillaNueva.admin_resolucion'
     def get(self, request):
         return render(request, 'resolucion/resolucion_publicacion_masiva.html')
 
