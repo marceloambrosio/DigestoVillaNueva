@@ -4,7 +4,7 @@
 
 {% block content %}
 <div class="container mt-5">
-    <h2>Listado de Resoluciones <a href="{% url 'resolucion_create' %}" class="btn btn-primary float-end">Nueva Resolución <i class="bi bi-file-earmark-plus"></i></a></h2>
+    <h2>Listado de Resoluciones {% if perms.AppDigestoVillaNueva.add_resolucion %}<a href="{% url 'resolucion_create' %}" class="btn btn-primary float-end">Nueva Resolución <i class="bi bi-file-earmark-plus"></i></a>{% endif%}</h2>
     
     <br>
     <table id="resolucionTable" class="table table-hover">
@@ -32,9 +32,11 @@
                 <td>{{ resolucion.descripcion }}</td>
                 <td>
                   {% if not resolucion.publicado %}
+                  {% if perms.AppDigestoVillaNueva.change_resolucion %}
                   <span data-bs-toggle="tooltip" data-bs-placement="top" title="Editar">
                     <button type="button" class="btn btn-primary" onclick="window.location.href='{% url 'resolucion_update' resolucion.id %}'"><i class="bi bi-pencil"></i></button>
                   </span>
+                  {% endif %}
                   {% endif %}
                   {% if resolucion.archivo_pdf %}
                   <span data-bs-toggle="tooltip" data-bs-placement="top" title="Imprimir">
@@ -42,14 +44,18 @@
                   </span>
                   {% endif %}
                   {% if not resolucion.publicado and resolucion.archivo_pdf %}
+                  {% if perms.AppDigestoVillaNueva.admin_resolucion %}
                   <span data-bs-toggle="tooltip" data-bs-placement="top" title="Publicar">
                     <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#publicModal{{ resolucion.id }}"><i class="bi bi-book"></i></button>
                   </span>
                   {% endif %}
+                  {% endif %}
                   {% if not resolucion.publicado %}
+                  {% if perms.AppDigestoVillaNueva.delete_resolucion %}
                   <span data-bs-toggle="tooltip" data-bs-placement="top" title="Eliminar">
                     <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal{{ resolucion.id }}"><i class="bi bi-trash"></i></button>
                   </span>
+                  {% endif %}
                   {% endif %}
                 </td>
             </tr>

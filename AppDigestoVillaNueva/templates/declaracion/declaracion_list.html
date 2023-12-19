@@ -4,7 +4,7 @@
 
 {% block content %}
 <div class="container mt-5">
-    <h2>Listado de Declaraciones <a href="{% url 'declaracion_create' %}" class="btn btn-primary float-end">Nueva Declaración <i class="bi bi-file-earmark-plus"></i></a></h2>
+    <h2>Listado de Declaraciones {% if perms.AppDigestoVillaNueva.add_declaracion %}<a href="{% url 'declaracion_create' %}" class="btn btn-primary float-end">Nueva Declaración <i class="bi bi-file-earmark-plus"></i></a>{% endif %}</h2>
     
     <br>
     <table id="declaracionTable" class="table table-hover">
@@ -32,9 +32,11 @@
                 <td>{{ declaracion.descripcion }}</td>
                 <td>
                   {% if not declaracion.publicado %}
+                  {% if perms.AppDigestoVillaNueva.change_declaracion %}
                   <span data-bs-toggle="tooltip" data-bs-placement="top" title="Editar">
                     <button type="button" class="btn btn-primary" onclick="window.location.href='{% url 'declaracion_update' declaracion.id %}'"><i class="bi bi-pencil"></i></button>
                   </span>
+                  {% endif %}
                   {% endif %}
                   {% if declaracion.archivo_pdf %}
                   <span data-bs-toggle="tooltip" data-bs-placement="top" title="Imprimir">
@@ -42,14 +44,18 @@
                   </span>
                   {% endif %}
                   {% if not declaracion.publicado and declaracion.archivo_pdf %}
+                  {% if perms.AppDigestoVillaNueva.admin_declaracion %}
                   <span data-bs-toggle="tooltip" data-bs-placement="top" title="Publicar">
                     <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#publicModal{{ declaracion.id }}"><i class="bi bi-book"></i></button>
                   </span>
                   {% endif %}
+                  {% endif %}
                   {% if not declaracion.publicado %}
+                  {% if perms.AppDigestoVillaNueva.delete_declaracion %}
                   <span data-bs-toggle="tooltip" data-bs-placement="top" title="Eliminar">
                     <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal{{ declaracion.id }}"><i class="bi bi-trash"></i></button>
                   </span>
+                  {% endif %}
                   {% endif %}
                 </td>
             </tr>

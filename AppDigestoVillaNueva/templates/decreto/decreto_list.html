@@ -4,8 +4,8 @@
 
 {% block content %}
 <div class="container mt-5">
-    <h2>Listado de Decretos <a href="{% url 'decreto_create' %}" class="btn btn-primary float-end">Nuevo Decreto <i class="bi bi-file-earmark-plus"></i></a></h2>
-    
+  
+    <h2>Listado de Decretos {% if perms.AppDigestoVillaNueva.add_decreto %}<a href="{% url 'decreto_create' %}" class="btn btn-primary float-end">Nuevo Decreto <i class="bi bi-file-earmark-plus"></i></a>{% endif %}</h2>
     <br>
     <table id="decretoTable" class="table table-hover">
         <thead>
@@ -32,9 +32,11 @@
                 <td>{{ decreto.descripcion }}</td>
                 <td>
                   {% if not decreto.publicado %}
+                  {% if perms.AppDigestoVillaNueva.change_decreto %}
                   <span data-bs-toggle="tooltip" data-bs-placement="top" title="Editar">
                     <button type="button" class="btn btn-primary" onclick="window.location.href='{% url 'decreto_update' decreto.id %}'"><i class="bi bi-pencil"></i></button>
                   </span>
+                  {% endif %}
                   {% endif %}
                   {% if decreto.archivo_pdf %}
                   <span data-bs-toggle="tooltip" data-bs-placement="top" title="Imprimir">
@@ -42,14 +44,18 @@
                   </span>
                   {% endif %}
                   {% if not decreto.publicado and decreto.archivo_pdf %}
+                  {% if perms.AppDigestoVillaNueva.admin_decreto %}
                   <span data-bs-toggle="tooltip" data-bs-placement="top" title="Publicar">
                     <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#publicModal{{ decreto.id }}"><i class="bi bi-book"></i></button>
                   </span>
                   {% endif %}
+                  {% endif %}
                   {% if not decreto.publicado %}
+                  {% if perms.AppDigestoVillaNueva.delete_decreto %}
                   <span data-bs-toggle="tooltip" data-bs-placement="top" title="Eliminar">
                     <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal{{ decreto.id }}"><i class="bi bi-trash"></i></button>
                   </span>
+                  {% endif %}
                   {% endif %}
                 </td>
             </tr>

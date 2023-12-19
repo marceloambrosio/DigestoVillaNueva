@@ -11,7 +11,7 @@ from datetime import datetime
 
 # Create your views here.
 
-class ResolucionCreateView(CreateView):
+class ResolucionCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     model = Resolucion
     form_class = ResolucionForm
     template_name = "resolucion/resolucion_create.html"
@@ -55,7 +55,7 @@ class ResolucionCreateView(CreateView):
         # Llama al método form_valid de la clase base para continuar con el procesamiento estándar
         return super().form_valid(form)
 
-class ResolucionUpdateView(UpdateView):
+class ResolucionUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     model = Resolucion
     form_class = ResolucionForm
     template_name = "resolucion/resolucion_edit.html"
@@ -76,7 +76,7 @@ class ResolucionUpdateView(UpdateView):
         # Llama al método form_valid de la clase base para continuar con el procesamiento estándar
         return super().form_valid(form)
 
-class ResolucionListView(ListView):
+class ResolucionListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
     model = Resolucion
     template_name = "resolucion/resolucion_list.html"
     context_object_name = 'resoluciones'
@@ -99,7 +99,7 @@ class ResolucionDeleteView(UpdateView):
         self.object.save()
         return redirect('resolucion_list')
     
-class ResolucionPublicarView(UpdateView):
+class ResolucionPublicarView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     model = Resolucion
     fields = ['publicado']
     permission_required = 'AppDigestoVillaNueva.admin_resolucion'
@@ -114,7 +114,7 @@ class ResolucionPublicarView(UpdateView):
         self.object.save()
         return redirect('resolucion_list')
 
-class ResolucionPublicarMasivoView(View):
+class ResolucionPublicarMasivoView(LoginRequiredMixin, PermissionRequiredMixin, View):
     permission_required = 'AppDigestoVillaNueva.admin_resolucion'
     def get(self, request):
         return render(request, 'resolucion/resolucion_publicacion_masiva.html')

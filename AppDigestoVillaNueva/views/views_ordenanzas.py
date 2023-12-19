@@ -11,7 +11,7 @@ from datetime import datetime
 
 # Create your views here.
 
-class OrdenanzaCreateView(CreateView):
+class OrdenanzaCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     model = Ordenanza
     form_class = OrdenanzaForm
     template_name = "ordenanza/ordenanza_create.html"
@@ -55,7 +55,7 @@ class OrdenanzaCreateView(CreateView):
         # Llama al método form_valid de la clase base para continuar con el procesamiento estándar
         return super().form_valid(form)
 
-class OrdenanzaUpdateView(UpdateView):
+class OrdenanzaUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     model = Ordenanza
     form_class = OrdenanzaForm
     template_name = "ordenanza/ordenanza_edit.html"
@@ -76,7 +76,7 @@ class OrdenanzaUpdateView(UpdateView):
         # Llama al método form_valid de la clase base para continuar con el procesamiento estándar
         return super().form_valid(form)
 
-class OrdenanzaListView(ListView):
+class OrdenanzaListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
     model = Ordenanza
     template_name = "ordenanza/ordenanza_list.html"
     context_object_name = 'ordenanza'
@@ -85,7 +85,7 @@ class OrdenanzaListView(ListView):
     def get_queryset(self):
         return Ordenanza.objects.filter(eliminado=False).order_by('-anio', '-numero_ordenanza')
 
-class OrdenanzaDeleteView(UpdateView):
+class OrdenanzaDeleteView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     model = Ordenanza
     fields = ['eliminado']
     permission_required = 'AppDigestoVillaNueva.delete_ordenanza'
@@ -99,7 +99,7 @@ class OrdenanzaDeleteView(UpdateView):
         self.object.save()
         return redirect('ordenanza_list')
     
-class OrdenanzaPublicarView(UpdateView):
+class OrdenanzaPublicarView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     model = Ordenanza
     fields = ['publicado']
     permission_required = 'AppDigestoVillaNueva.admin_ordenanza'
@@ -114,7 +114,7 @@ class OrdenanzaPublicarView(UpdateView):
         self.object.save()
         return redirect('ordenanza_list')
 
-class OrdenanzaPublicarMasivoView(View):
+class OrdenanzaPublicarMasivoView(LoginRequiredMixin, PermissionRequiredMixin, View):
     permission_required = 'AppDigestoVillaNueva.admin_ordenanza'
     def get(self, request):
         return render(request, 'ordenanza/ordenanza_publicacion_masiva.html')

@@ -28,6 +28,7 @@
           <li class="nav-item">
             <a class="nav-link" href="{% url 'index' %}">Inicio</a>
           </li>
+          {% if perms.AppDigestoVillaNueva.view_decreto or perms.AppDigestoVillaNueva.add_decreto %}
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               Decretos
@@ -35,10 +36,16 @@
             <ul class="dropdown-menu">
               <li><a class="dropdown-item" href="{% url 'decreto_list' %}">Listado</a></li>
               <hr>
+              {% if perms.AppDigestoVillaNueva.add_decreto %}
               <li><a class="dropdown-item" href="{% url 'decreto_create' %}">Nuevo</a></li>
+              {% endif %}
+              {% if perms.AppDigestoVillaNueva.admin_decreto %}
               <li><a class="dropdown-item" href="{% url 'decreto_public_masivo' %}">Publicación masiva</a></li>
+              {% endif %}
             </ul>
           </li>
+          {% endif %}
+          {% if perms.AppDigestoVillaNueva.view_ordenanza or perms.AppDigestoVillaNueva.add_ordenanza %}
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               Ordenanzas
@@ -46,10 +53,16 @@
             <ul class="dropdown-menu">
               <li><a class="dropdown-item" href="{% url 'ordenanza_list' %}">Listado</a></li>
               <hr>
+              {% if perms.AppDigestoVillaNueva.add_ordenanza %}
               <li><a class="dropdown-item" href="{% url 'ordenanza_create' %}">Nueva</a></li>
+              {% endif %}
+              {% if perms.AppDigestoVillaNueva.admin_ordenanza %}
               <li><a class="dropdown-item" href="{% url 'ordenanza_public_masivo' %}">Publicación masiva</a></li>
+              {% endif %}
             </ul>
           </li>
+          {% endif %}
+          {% if perms.AppDigestoVillaNueva.view_resolucion or perms.AppDigestoVillaNueva.add_resolucion %}
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               Resoluciones
@@ -57,10 +70,16 @@
             <ul class="dropdown-menu">
               <li><a class="dropdown-item" href="{% url 'resolucion_list' %}">Listado</a></li>
               <hr>
+              {% if perms.AppDigestoVillaNueva.add_resolucion %}
               <li><a class="dropdown-item" href="{% url 'resolucion_create' %}">Nueva</a></li>
+              {% endif %}
+              {% if perms.AppDigestoVillaNueva.admin_resolucion %}
               <li><a class="dropdown-item" href="{% url 'resolucion_public_masivo' %}">Publicación masiva</a></li>
+              {% endif %}
             </ul>
           </li>
+          {% endif %}
+          {% if perms.AppDigestoVillaNueva.view_declaracion or perms.AppDigestoVillaNueva.add_declaracion %}
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               Declaraciones
@@ -68,10 +87,16 @@
             <ul class="dropdown-menu">
               <li><a class="dropdown-item" href="{% url 'declaracion_list' %}">Listado</a></li>
               <hr>
+              {% if perms.AppDigestoVillaNueva.add_declaracion %}
               <li><a class="dropdown-item" href="{% url 'declaracion_create' %}">Nueva</a></li>
+              {% endif %}
+              {% if perms.AppDigestoVillaNueva.admin_declaracion %}
               <li><a class="dropdown-item" href="{% url 'declaracion_public_masivo' %}">Publicación masiva</a></li>
+              {% endif %}
             </ul>
           </li>
+          {% endif %}
+          {% if request.user.is_superuser %}
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               Boletín Oficial
@@ -82,6 +107,7 @@
               <li><a class="dropdown-item" href="{% url 'boletinoficial_create' %}">Nuevo</a></li>
             </ul>
           </li>
+          {% endif %}
         </ul>
       </div>
       <form class="d-flex">
