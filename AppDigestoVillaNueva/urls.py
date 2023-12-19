@@ -2,9 +2,11 @@ from django.urls import path
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
 from django.conf.urls.static import static
+from django.views.generic.base import RedirectView
 from .views import *
 
 urlpatterns = [
+    path('', RedirectView.as_view(url='/home')),
     path('home/', login_required(index), name='index'),
     path('decreto-crear/', login_required(DecretoCreateView.as_view()), name='decreto_create'),
     path('decreto-editar/<int:pk>/', login_required(DecretoUpdateView.as_view()), name='decreto_update'),

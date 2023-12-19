@@ -30,6 +30,22 @@ class Decreto(Documento):
     def __str__(self):
         return "Decreto- " + str(self.anio) + "/" + str(self.numero_decreto)
     
+    def save(self, *args, **kwargs):
+        # Si el objeto ya existe y se está actualizando el archivo
+        if self.pk and self.archivo_pdf:
+            try:
+                # Intenta obtener el objeto antiguo
+                old_file = Decreto.objects.get(pk=self.pk).archivo_pdf
+            except Decreto.DoesNotExist:
+                pass
+            else:
+                # Si el archivo antiguo existe y es diferente del nuevo, bórralo
+                if old_file and old_file != self.archivo_pdf:
+                    old_file.delete()
+
+        # Llama al método save de la clase base para continuar con el procesamiento estándar
+        super().save(*args, **kwargs)
+    
 def upload_to_ordenanza(instance, filename):
     base, extension = os.path.splitext(filename)
     return 'Ordenanzas/Ordenanza-{0}-{1:04d}{2}'.format(instance.anio, instance.numero_ordenanza, extension)
@@ -42,6 +58,22 @@ class Ordenanza(Documento):
 
     def __str__(self):
         return "Ordenanza- " + str(self.anio) + "/" + str(self.numero_ordenanza)
+    
+    def save(self, *args, **kwargs):
+        # Si el objeto ya existe y se está actualizando el archivo
+        if self.pk and self.archivo_pdf:
+            try:
+                # Intenta obtener el objeto antiguo
+                old_file = Ordenanza.objects.get(pk=self.pk).archivo_pdf
+            except Ordenanza.DoesNotExist:
+                pass
+            else:
+                # Si el archivo antiguo existe y es diferente del nuevo, bórralo
+                if old_file and old_file != self.archivo_pdf:
+                    old_file.delete()
+
+        # Llama al método save de la clase base para continuar con el procesamiento estándar
+        super().save(*args, **kwargs)
 
 def upload_to_resolucion(instance, filename):
     base, extension = os.path.splitext(filename)
@@ -55,6 +87,22 @@ class Resolucion(Documento):
 
     def __str__(self):
         return "Resolucion- " + str(self.anio) + "/" + str(self.numero_resolucion)
+    
+    def save(self, *args, **kwargs):
+        # Si el objeto ya existe y se está actualizando el archivo
+        if self.pk and self.archivo_pdf:
+            try:
+                # Intenta obtener el objeto antiguo
+                old_file = Resolucion.objects.get(pk=self.pk).archivo_pdf
+            except Resolucion.DoesNotExist:
+                pass
+            else:
+                # Si el archivo antiguo existe y es diferente del nuevo, bórralo
+                if old_file and old_file != self.archivo_pdf:
+                    old_file.delete()
+
+        # Llama al método save de la clase base para continuar con el procesamiento estándar
+        super().save(*args, **kwargs)
 
 def upload_to_declaracion(instance, filename):
     base, extension = os.path.splitext(filename)
@@ -68,6 +116,22 @@ class Declaracion(Documento):
 
     def __str__(self):
         return "Declaracion- " + str(self.anio) + "/" + str(self.numero_declaracion)
+    
+    def save(self, *args, **kwargs):
+        # Si el objeto ya existe y se está actualizando el archivo
+        if self.pk and self.archivo_pdf:
+            try:
+                # Intenta obtener el objeto antiguo
+                old_file = Declaracion.objects.get(pk=self.pk).archivo_pdf
+            except Declaracion.DoesNotExist:
+                pass
+            else:
+                # Si el archivo antiguo existe y es diferente del nuevo, bórralo
+                if old_file and old_file != self.archivo_pdf:
+                    old_file.delete()
+
+        # Llama al método save de la clase base para continuar con el procesamiento estándar
+        super().save(*args, **kwargs)
 
 def upload_to_boletin(instance, filename):
     base, extension = os.path.splitext(filename)
