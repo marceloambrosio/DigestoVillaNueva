@@ -4,7 +4,7 @@
 
 {% block content %}
 <div class="container mt-5">
-    <h2>Boletín Oficial <a href="{% url 'boletinoficial_create' %}" class="btn btn-primary float-end">Nuevo Boletín Oficial <i class="bi bi-file-earmark-plus"></i></a></h2>
+    <h2>Boletín Oficial {% if perms.AppDigestoVillaNueva.add_boletinoficial %}<a href="{% url 'boletinoficial_create' %}" class="btn btn-primary float-end">Nuevo Boletín Oficial <i class="bi bi-file-earmark-plus"></i></a>{% endif %}</h2>
     
     <br>
     <table id="boletinoficialTable" class="table table-hover">
@@ -25,14 +25,18 @@
                     <button type="button" class="btn btn-success" onclick="window.open('{% url 'boletinoficial_pdf' boletinoficial.id %}', '_blank')"><i class="bi bi-printer"></i></button>
                   </span>
                   {% if not boletinoficial.publicado and boletinoficial.archivo_pdf %}
+                  {% if perms.AppDigestoVillaNueva.admin_boletinoficial %}
                   <span data-bs-toggle="tooltip" data-bs-placement="top" title="Publicar">
                     <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#publicModal{{ boletinoficial.id }}"><i class="bi bi-book"></i></button>
                   </span>
                   {% endif %}
+                  {% endif %}
                   {% if not boletinoficial.publicado %}
+                  {% if perms.AppDigestoVillaNueva.delete_boletinoficial %}
                   <span data-bs-toggle="tooltip" data-bs-placement="top" title="Eliminar">
                     <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal{{ boletinoficial.id }}"><i class="bi bi-trash"></i></button>
                   </span>
+                  {% endif %}
                   {% endif %}
                 </td>
             </tr>

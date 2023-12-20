@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block content %}
+<br><br><br>
+  <div class="text-center">
+    <h1 class="text-danger">! ! !</h1>
+    <h2>Acceso denegado</h2>
+    <p class="mb-4"><b>No tienes permiso para acceder a esta página.</b></p>
+    <a class="btn" style="background-color: #9EC8B9;" href="{% url 'index' %}">Volver al inicio</a>
+  </div>
+{% endblock %}

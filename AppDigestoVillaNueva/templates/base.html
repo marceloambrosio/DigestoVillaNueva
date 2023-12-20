@@ -96,15 +96,19 @@
             </ul>
           </li>
           {% endif %}
-          {% if request.user.is_superuser %}
+          {% if perms.AppDigestoVillaNueva.view_boletinoficial or perms.AppDigestoVillaNueva.add_boletinoficial %}
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               Boletín Oficial
             </a>
             <ul class="dropdown-menu">
+              {% if perms.AppDigestoVillaNueva.view_declaracion %}
               <li><a class="dropdown-item" href="{% url 'boletinoficial_list' %}">Listado</a></li>
+              {% endif %}
               <hr>
+              {% if perms.AppDigestoVillaNueva.add_declaracion %}
               <li><a class="dropdown-item" href="{% url 'boletinoficial_create' %}">Nuevo</a></li>
+              {% endif %}
             </ul>
           </li>
           {% endif %}

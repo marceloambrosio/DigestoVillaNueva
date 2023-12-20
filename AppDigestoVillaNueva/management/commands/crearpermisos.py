@@ -12,6 +12,7 @@ class Command(BaseCommand):
         self.create_custom_permission('Resolucion', 'admin_resolucion', 'Admin resolucion')
         self.create_custom_permission('Ordenanza', 'admin_ordenanza', 'Admin ordenanza')
         self.create_custom_permission('Declaracion', 'admin_declaracion', 'Admin declaracion')
+        self.create_custom_permission('BoletinOficial', 'admin_boletinoficial', 'Admin boletin oficial')
 
     def create_custom_permission(self, model_name, codename, name):
         # Obtén el ContentType para el modelo dado
