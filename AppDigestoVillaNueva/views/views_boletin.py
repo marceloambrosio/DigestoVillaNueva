@@ -108,7 +108,7 @@ def generar_boletin(boletin):
 
     # Almacena el PDF en el campo archivo_pdf
     pdf_buffer.seek(0)
-    boletin.archivo_pdf.save('Boletin-{0}.pdf'.format(boletin.fecha_creacion), ContentFile(pdf_buffer.read()))
+    boletin.archivo_pdf.save('BoletinOficial-{0}.pdf'.format(boletin.fecha_creacion), ContentFile(pdf_buffer.read()))
 
     boletin.save()
 

@@ -135,7 +135,7 @@ class Declaracion(Documento):
 
 def upload_to_boletin(instance, filename):
     base, extension = os.path.splitext(filename)
-    return 'BoletinOficial/Boletin-{0}{1}'.format(instance.fecha_creacion, extension)
+    return 'BoletinOficial/BoletinOficial-{0}{1}'.format(instance.fecha_creacion, extension)
 
 class BoletinOficial(models.Model):
     fecha_creacion = models.DateField(default=timezone.now)

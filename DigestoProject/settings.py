@@ -151,4 +151,6 @@ SESSION_COOKIE_AGE = None
 
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
-SESSION_COOKIE_AGE = 1800  # 30 minutos (en segundos)
+SESSION_COOKIE_AGE = 1800  # La sesión expira después de 30 minutos
+
+SESSION_SAVE_EVERY_REQUEST = True  # Actualiza la cookie de sesión en cada solicitud

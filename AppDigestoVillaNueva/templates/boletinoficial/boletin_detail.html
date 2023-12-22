@@ -8,13 +8,6 @@
         <br>
         <h4 class="card-title">Boletín Oficial - {{ boletin.fecha_creacion|date:"d/m/Y" }}</h4>
         <p>Incluye los documentos publicados entre las fechas <b>{{ boletin.fecha_desde|date:"d/m/Y" }}</b> y <b>{{ boletin.fecha_hasta|date:"d/m/Y" }}</b>.</p>
-        <!--     <h6>Incluye:</h6>
-    <ul>
-        <li>Decretos: {{ boletin.decretos }}</li>
-        <li>Resoluciones: {{ boletin.resoluciones }}</li>
-        <li>Ordenanzas: {{ boletin.ordenanzas }}</li>
-        <li>Declaraciones: {{ boletin.declaraciones }}</li>
-    </ul> -->
         <h6>Documentos:</h6>
         <ul>
             {% for documento in documentos %}
