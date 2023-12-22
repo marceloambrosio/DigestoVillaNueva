@@ -10,6 +10,67 @@ from ..forms import BoletinOficialForm
 from io import BytesIO
 from reportlab.pdfgen import canvas
 from PyPDF2 import PdfMerger
+from reportlab.pdfgen import canvas
+from reportlab.platypus import Image
+from PyPDF2 import PdfMerger
+from reportlab.lib.pagesizes import A4
+from reportlab.lib.colors import gray
+
+def generar_portada(boletin_id):
+    # Obtén el boletín
+    boletin = BoletinOficial.objects.get(id=boletin_id)
+
+    # Crea un nuevo objeto Canvas con tamaño de hoja A4
+    buffer = BytesIO()
+    c = canvas.Canvas(buffer, pagesize=A4)
+
+    # Define la fuente y el tamaño de la fuente
+    c.setFont("Helvetica-Bold", 30)
+
+    # Dibuja el título centrado y más abajo
+    c.drawCentredString(A4[0] / 2, 650, "Boletín Oficial")
+
+    # Cambia el tamaño de la fuente para la fecha
+    c.setFont("Helvetica", 18)
+
+    # Cambia el color de la fuente a gris
+    c.setFillColor(gray)
+
+    # Dibuja la fecha centrada y más abajo
+    c.drawCentredString(A4[0] / 2, 610, boletin.fecha_creacion.strftime('%d/%m/%Y'))
+
+    # Carga la imagen de la portada
+    portada = Image('img/boletinoficial/boletin_portada.png')
+
+    # Ajusta el tamaño de la imagen para que ocupe todo el ancho de la hoja
+    portada_width = A4[0]
+    portada_height = portada.drawHeight * portada_width / portada.drawWidth
+    portada = Image('img/boletinoficial/boletin_portada.png', width=portada_width, height=portada_height)
+
+    # Dibuja la imagen de portada centrada y abajo
+    portada.drawOn(c, (A4[0] - portada.drawWidth) / 2, 300)
+
+    # Carga el nuevo logo
+    logo = Image('img/boletinoficial/boletin_pie.png')
+
+    # Ajusta el tamaño del logo para que tenga un alto de 50 y mantenga su relación de aspecto original
+    logo_height = 80
+    logo_width = logo.drawWidth * logo_height / logo.drawHeight
+    logo = Image('img/boletinoficial/boletin_pie.png', width=logo_width, height=logo_height)
+
+    # Calcula la posición x para centrar el logo
+    logo_x = (A4[0] - logo_width) / 2
+
+    # Dibuja el logo en el pie de la página
+    logo.drawOn(c, logo_x, 50)
+
+    # Guarda el PDF
+    c.showPage()
+    c.save()
+
+    # Devuelve el PDF como un objeto de bytes
+    buffer.seek(0)
+    return buffer.read()
 
 def generar_boletin(boletin):
     # Recoge los documentos relevantes
@@ -24,25 +85,31 @@ def generar_boletin(boletin):
         documentos.extend(Declaracion.objects.filter(fecha_creacion__range=[boletin.fecha_desde, boletin.fecha_hasta], publicado=True).order_by('numero_declaracion'))
 
     # Crea la portada del boletín
-    buffer = BytesIO()
-    p = canvas.Canvas(buffer)
-    p.drawString(100, 800, "Boletin Oficial {}".format(boletin.fecha_creacion))
-    p.showPage()
-    p.save()
-    portada = buffer.getvalue()
+    portada = generar_portada(boletin.id)
 
-    # Une los archivos PDF
+    # Crea un objeto PdfMerger
     merger = PdfMerger()
-    merger.append(ContentFile(portada))
+
+    # Añade la portada al PDF
+    merger.append(BytesIO(portada))
+
+    # Añade los documentos al PDF
     for documento in documentos:
         merger.append(documento.archivo_pdf.path)
-    buffer = BytesIO()
-    merger.write(buffer)
+
+    # Crea un objeto BytesIO para guardar el PDF
+    pdf_buffer = BytesIO()
+
+    # Escribe el PDF en el buffer
+    merger.write(pdf_buffer)
+
+    # Cierra el objeto PdfMerger
     merger.close()
 
     # Almacena el PDF en el campo archivo_pdf
-    pdf = buffer.getvalue()
-    boletin.archivo_pdf.save('Boletin-{0}.pdf'.format(boletin.fecha_creacion), ContentFile(pdf))
+    pdf_buffer.seek(0)
+    boletin.archivo_pdf.save('Boletin-{0}.pdf'.format(boletin.fecha_creacion), ContentFile(pdf_buffer.read()))
+
     boletin.save()
 
 @login_required
